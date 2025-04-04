@@ -1,5 +1,7 @@
 package com.aceleramaker.projeto.blogpessoal.controller;
 
+import com.aceleramaker.projeto.blogpessoal.controller.schema.AtualizaTemaDTO;
+import com.aceleramaker.projeto.blogpessoal.controller.schema.TemaDTO;
 import com.aceleramaker.projeto.blogpessoal.model.Tema;
 import com.aceleramaker.projeto.blogpessoal.service.TemaService;
 import org.springframework.http.ResponseEntity;
@@ -18,12 +20,12 @@ public class TemaController {
     }
 
     @PostMapping
-    public ResponseEntity<Tema> criar(@RequestBody Tema tema) {
+    public ResponseEntity<TemaDTO> criar(@RequestBody Tema tema) {
         return ResponseEntity.ok(temaService.criar(tema));
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<Tema> atualizar(@PathVariable Long id, @RequestBody Tema tema) {
+    @PatchMapping("/{id}")
+    public ResponseEntity<TemaDTO> atualizar(@PathVariable Long id, @RequestBody AtualizaTemaDTO tema) {
         return ResponseEntity.ok(temaService.atualizar(id, tema));
     }
 

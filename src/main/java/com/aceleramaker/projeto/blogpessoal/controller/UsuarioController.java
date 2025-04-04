@@ -1,7 +1,8 @@
-// UsuarioController.java
 package com.aceleramaker.projeto.blogpessoal.controller;
 
-import com.aceleramaker.projeto.blogpessoal.model.Usuario;
+import com.aceleramaker.projeto.blogpessoal.controller.schema.AtualizaUsuarioDTO;
+import com.aceleramaker.projeto.blogpessoal.controller.schema.CriarUsuarioDTO;
+import com.aceleramaker.projeto.blogpessoal.controller.schema.UsuarioDTO;
 import com.aceleramaker.projeto.blogpessoal.service.UsuarioService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -17,13 +18,13 @@ public class UsuarioController {
     }
 
     @PostMapping
-    public ResponseEntity<Usuario> cadastrar(@RequestBody Usuario usuario) {
-        return ResponseEntity.ok(usuarioService.cadastrar(usuario));
+    public ResponseEntity<UsuarioDTO> cadastrar(@RequestBody CriarUsuarioDTO dto) {
+        return ResponseEntity.ok(usuarioService.cadastrar(dto));
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<Usuario> atualizar(@PathVariable Long id, @RequestBody Usuario usuario) {
-        return ResponseEntity.ok(usuarioService.atualizar(id, usuario));
+    @PatchMapping("/{id}")
+    public ResponseEntity<UsuarioDTO> atualizar(@PathVariable Long id, @RequestBody AtualizaUsuarioDTO dto) {
+        return ResponseEntity.ok(usuarioService.atualizar(id, dto));
     }
 
     @DeleteMapping("/{id}")
@@ -32,8 +33,4 @@ public class UsuarioController {
         return ResponseEntity.noContent().build();
     }
 
-    @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestBody Usuario usuario) {
-        return ResponseEntity.ok(usuarioService.login(usuario));
-    }
 }

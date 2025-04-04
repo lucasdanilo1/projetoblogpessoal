@@ -1,51 +1,41 @@
 package com.aceleramaker.projeto.blogpessoal.service;
 
-import com.aceleramaker.projeto.blogpessoal.model.Postagem;
-import com.aceleramaker.projeto.blogpessoal.repository.PostagemRepository;
+import com.aceleramaker.projeto.blogpessoal.controller.schema.AtualizaTemaDTO;
+import com.aceleramaker.projeto.blogpessoal.controller.schema.TemaDTO;
+import com.aceleramaker.projeto.blogpessoal.model.Tema;
+import com.aceleramaker.projeto.blogpessoal.model.exception.EntidadeNaoEncontradaException;
+import com.aceleramaker.projeto.blogpessoal.repository.TemaRepository;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
-public class PostagemService {
-    private final PostagemRepository postagemRepository;
+public class TemaService {
 
-    public PostagemService(PostagemRepository postagemRepository) {
-        this.postagemRepository = postagemRepository;
+    private final TemaRepository temaRepository;
+
+    public TemaService(TemaRepository temaRepository) {
+        this.temaRepository = temaRepository;
     }
 
-    public Postagem criar(Postagem postagem) {
-        postagem.setData(LocalDateTime.now());
-        return postagemRepository.save(postagem);
+    public TemaDTO criar(Tema tema) {
+        return new TemaDTO(temaRepository.save(tema));
     }
 
-    public Postagem atualizar(Long id, Postagem postagem) {
-        Postagem existente = postagemRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Postagem não encontrada"));
+    public TemaDTO atualizar(Long id, AtualizaTemaDTO dto) {
+        var tema = temaRepository.findById(id)
+                .orElseThrow(() -> new EntidadeNaoEncontradaException("Tema não encontrado"));
 
-        existente.setTitulo(postagem.getTitulo());
-        existente.setTexto(postagem.getTexto());
-        existente.setTema(postagem.getTema());
-        return postagemRepository.save(existente);
+        if (dto.descricao() != null) tema.setDescricao(dto.descricao());
+
+        return new TemaDTO(temaRepository.save(tema));
     }
 
     public void deletar(Long id) {
-        postagemRepository.deleteById(id);
+        temaRepository.deleteById(id);
     }
 
-    public List<Postagem> listarTodas() {
-        return postagemRepository.findAll();
-    }
-
-    public List<Postagem> filtrar(Long autorId, Long temaId) {
-        if (autorId != null && temaId != null) {
-            return postagemRepository.findByUsuarioIdAndTemaId(autorId, temaId);
-        } else if (autorId != null) {
-            return postagemRepository.findByUsuarioId(autorId);
-        } else if (temaId != null) {
-            return postagemRepository.findByTemaId(temaId);
-        }
-        return listarTodas();
+    public List<Tema> listarTodos() {
+        return temaRepository.findAll();
     }
 }

@@ -1,13 +1,14 @@
-// PostagemController.java
 package com.aceleramaker.projeto.blogpessoal.controller;
 
+import com.aceleramaker.projeto.blogpessoal.controller.schema.AtualizaPostagemDTO;
 import com.aceleramaker.projeto.blogpessoal.controller.schema.CriarPostagemDTO;
-import com.aceleramaker.projeto.blogpessoal.model.Postagem;
+import com.aceleramaker.projeto.blogpessoal.controller.schema.FiltrosPostagemDTO;
+import com.aceleramaker.projeto.blogpessoal.controller.schema.PostagemDTO;
 import com.aceleramaker.projeto.blogpessoal.service.PostagemService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/postagens")
@@ -20,13 +21,13 @@ public class PostagemController {
     }
 
     @PostMapping
-    public ResponseEntity<Postagem> criar(@RequestBody CriarPostagemDTO criarPostagemDTO) {
+    public ResponseEntity<PostagemDTO> criar(@RequestBody CriarPostagemDTO criarPostagemDTO) {
         return ResponseEntity.ok(postagemService.criar(criarPostagemDTO));
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<Postagem> atualizar(@PathVariable Long id, @RequestBody Postagem postagem) {
-        return ResponseEntity.ok(postagemService.atualizar(id, postagem));
+    @PatchMapping("/{id}")
+    public ResponseEntity<PostagemDTO> atualizar(@PathVariable Long id, @RequestBody AtualizaPostagemDTO dto) {
+        return ResponseEntity.ok(postagemService.atualizar(id, dto));
     }
 
     @DeleteMapping("/{id}")
@@ -36,14 +37,7 @@ public class PostagemController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Postagem>> listarTodas() {
-        return ResponseEntity.ok(postagemService.listarTodas());
-    }
-
-    @GetMapping("/filtro")
-    public ResponseEntity<List<Postagem>> filtrar(
-            @RequestParam(required = false) Long autor,
-            @RequestParam(required = false) Long tema) {
-        return ResponseEntity.ok(postagemService.filtrar(autor, tema));
-    }
+    public ResponseEntity<Page<PostagemDTO>> listarTodas(
+            @RequestBody FiltrosPostagemDTO filtros, Pageable pageable
+    ) {return ResponseEntity.ok(postagemService.listarPostagem(filtros, pageable));}
 }
