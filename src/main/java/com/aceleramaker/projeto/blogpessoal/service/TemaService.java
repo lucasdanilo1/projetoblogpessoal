@@ -24,18 +24,19 @@ public class TemaService {
 
     public TemaDTO atualizar(Long id, AtualizaTemaDTO dto) {
         var tema = temaRepository.findById(id)
-                .orElseThrow(() -> new EntidadeNaoEncontradaException("Tema não encontrado"));
+                .orElseThrow(() -> new EntidadeNaoEncontradaException(Tema.class));
 
         if (dto.descricao() != null) tema.setDescricao(dto.descricao());
 
         return new TemaDTO(temaRepository.save(tema));
     }
 
+    public List<TemaDTO> listarTodos() {
+        return temaRepository.findAll().stream().map(TemaDTO::new).toList();
+    }
+
     public void deletar(Long id) {
         temaRepository.deleteById(id);
     }
 
-    public List<Tema> listarTodos() {
-        return temaRepository.findAll();
-    }
 }

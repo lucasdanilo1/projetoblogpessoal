@@ -1,0 +1,41 @@
+services:
+  banco:
+    container_name: esg-db
+    image: postgres:16.1
+    environment:
+      - POSTGRES_USER=usuario
+      - POSTGRES_PASSWORD=pass
+      - POSTGRES_DB=blogpessoal
+    networks:
+      - services
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+  blogpessoal-api:
+    depends_on:
+      banco:
+        condition: service_started
+    container_name: blogpessoal
+    build:
+      context: ../app/esg-abnt-backend/
+      dockerfile: deploy/local/Dockerfile
+    env_file:
+      .env
+    ports:
+      - "8080:8080"
+    networks:
+      - services
+    healthcheck:
+      test: "curl --insecure https://esg-backend:8080/api/health"
+      interval: 15s
+      retries: 10
+
+volumes:
+  pgdata:
+    driver: local
+
+networks:
+  services:
+    name: services

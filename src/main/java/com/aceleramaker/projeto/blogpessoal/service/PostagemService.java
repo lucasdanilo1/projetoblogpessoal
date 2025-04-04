@@ -5,6 +5,8 @@ import com.aceleramaker.projeto.blogpessoal.controller.schema.CriarPostagemDTO;
 import com.aceleramaker.projeto.blogpessoal.controller.schema.FiltrosPostagemDTO;
 import com.aceleramaker.projeto.blogpessoal.controller.schema.PostagemDTO;
 import com.aceleramaker.projeto.blogpessoal.model.Postagem;
+import com.aceleramaker.projeto.blogpessoal.model.Tema;
+import com.aceleramaker.projeto.blogpessoal.model.Usuario;
 import com.aceleramaker.projeto.blogpessoal.model.exception.EntidadeNaoEncontradaException;
 import com.aceleramaker.projeto.blogpessoal.repository.PostagemRepository;
 import com.aceleramaker.projeto.blogpessoal.repository.TemaRepository;
@@ -31,10 +33,10 @@ public class PostagemService {
 
     public PostagemDTO criar(CriarPostagemDTO dto) {
         var usuario = usuarioRepository.findById(dto.usuarioId())
-                .orElseThrow(() -> new EntidadeNaoEncontradaException("Usuário não encontrado"));
+                .orElseThrow(() -> new EntidadeNaoEncontradaException(Usuario.class));
 
         var tema = temaRepository.findById(dto.temaId())
-                .orElseThrow(() -> new EntidadeNaoEncontradaException("Tema não encontrado"));
+                .orElseThrow(() -> new EntidadeNaoEncontradaException(Tema.class));
 
         Postagem postagem = new Postagem(dto, usuario, tema);
 
@@ -43,28 +45,26 @@ public class PostagemService {
 
     public PostagemDTO atualizar(Long postagemId, AtualizaPostagemDTO dto) {
         var postagem = postagemRepository.findById(postagemId)
-                .orElseThrow(() -> new EntidadeNaoEncontradaException("Postagem não encontrada"));
+                .orElseThrow(() -> new EntidadeNaoEncontradaException(Postagem.class));
 
         if (dto.titulo() != null) postagem.setTitulo(postagem.getTitulo());
 
-
         if (dto.texto() != null) postagem.setTexto(postagem.getTexto());
-
 
         if (dto.temaId() != null) {
             var tema = temaRepository.findById(postagem.getTema().getId())
-                    .orElseThrow(() -> new EntidadeNaoEncontradaException("Tema não encontrado"));
+                    .orElseThrow(() -> new EntidadeNaoEncontradaException(Tema.class));
             postagem.setTema(tema);
         }
 
         return new PostagemDTO(postagemRepository.save(postagem));
     }
 
-    public void deletar(Long id) {
-        postagemRepository.deleteById(id);
-    }
-
     public Page<PostagemDTO> listarPostagem(FiltrosPostagemDTO filtros, Pageable pageable) {
         return postagemRepository.buscarComFiltros(filtros, pageable).map(PostagemDTO::new);
+    }
+
+    public void deletar(Long id) {
+        postagemRepository.deleteById(id);
     }
 }

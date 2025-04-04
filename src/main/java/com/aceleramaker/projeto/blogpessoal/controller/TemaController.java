@@ -29,14 +29,14 @@ public class TemaController {
         return ResponseEntity.ok(temaService.atualizar(id, tema));
     }
 
+    @GetMapping
+    public ResponseEntity<List<TemaDTO>> listarTodos() {
+        return ResponseEntity.ok(temaService.listarTodos());
+    }
+
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deletar(@PathVariable Long id) {
         temaService.deletar(id);
         return ResponseEntity.noContent().build();
-    }
-
-    @GetMapping
-    public ResponseEntity<List<Tema>> listarTodos() {
-        return ResponseEntity.ok(temaService.listarTodos());
     }
 }

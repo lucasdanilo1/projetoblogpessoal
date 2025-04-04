@@ -37,7 +37,7 @@ public class PostagemController {
     }
 
     @GetMapping
-    public ResponseEntity<Page<PostagemDTO>> listarTodas(
-            @RequestBody FiltrosPostagemDTO filtros, Pageable pageable
-    ) {return ResponseEntity.ok(postagemService.listarPostagem(filtros, pageable));}
+    public ResponseEntity<Page<PostagemDTO>> listarTodas(@RequestBody FiltrosPostagemDTO filtros, Pageable pageable) {
+        return ResponseEntity.ok(postagemService.listarPostagem(filtros, pageable));
+    }
 }

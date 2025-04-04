@@ -1,9 +1,9 @@
 package com.aceleramaker.projeto.blogpessoal.controller;
 
-import com.aceleramaker.projeto.blogpessoal.controller.schema.AtualizaUsuarioDTO;
-import com.aceleramaker.projeto.blogpessoal.controller.schema.CriarUsuarioDTO;
-import com.aceleramaker.projeto.blogpessoal.controller.schema.UsuarioDTO;
+import com.aceleramaker.projeto.blogpessoal.controller.schema.*;
 import com.aceleramaker.projeto.blogpessoal.service.UsuarioService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -27,10 +27,14 @@ public class UsuarioController {
         return ResponseEntity.ok(usuarioService.atualizar(id, dto));
     }
 
+    @GetMapping
+    public ResponseEntity<Page<UsuarioDTO>> listarTodos(@RequestBody FiltrosUsuarioDTO filtros, Pageable pageable) {
+        return ResponseEntity.ok(usuarioService.listarUsuarios(filtros, pageable));
+    }
+
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deletar(@PathVariable Long id) {
         usuarioService.deletar(id);
         return ResponseEntity.noContent().build();
     }
-
 }
