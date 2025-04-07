@@ -32,6 +32,8 @@ cd projetoblogpessoal/ambiente
 docker compose up
 ```
 
+#### Não é necessário nenhuma configuração adicional.
+
 -------------------------------------------------------------------------------------------------------------
 
 ### Teste e disparo das requisições
