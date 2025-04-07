@@ -1,26 +1,28 @@
 package com.aceleramaker.projeto.blogpessoal.service;
 
 import com.aceleramaker.projeto.blogpessoal.controller.schema.LoginRequestDTO;
-import com.aceleramaker.projeto.blogpessoal.repository.UsuarioRepository;
+import com.aceleramaker.projeto.blogpessoal.model.UsuarioLogin;
+import com.aceleramaker.projeto.blogpessoal.repository.UsuarioLoginRepository;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.userdetails.UserDetails;
+
+import java.util.Optional;
 
 public class AuthenticationService {
     private final AuthenticationManager authenticationManager;
-    private UsuarioRepository usuarioRepository;
+    private UsuarioLoginRepository usuarioLoginRepository;
 
     public AuthenticationService(AuthenticationManager authenticationManager) {
         this.authenticationManager = authenticationManager;
     }
 
-    public UserDetails authenticate(LoginRequestDTO loginDto){
+    public Optional<UsuarioLogin> authenticate(LoginRequestDTO loginDto){
             this.authenticationManager
                     .authenticate(new UsernamePasswordAuthenticationToken(loginDto.usuario(), loginDto.senha()));
         return extrairUsuario(loginDto.usuario());
     }
 
-    public UserDetails extrairUsuario(String username) {
-        return this.usuarioRepository.findByUsuario(username);
+    public Optional<UsuarioLogin> extrairUsuario(String username) {
+        return this.usuarioLoginRepository.findByUsuario(username);
     }
 }

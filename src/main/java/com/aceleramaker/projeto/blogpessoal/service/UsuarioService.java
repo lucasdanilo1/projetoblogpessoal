@@ -11,6 +11,9 @@ import com.aceleramaker.projeto.blogpessoal.repository.UsuarioRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
 
 @Service
 public class UsuarioService {
@@ -27,6 +30,19 @@ public class UsuarioService {
         return new UsuarioDTO(usuarioRepository.save(new Usuario(dto)));
     }
 
+    public void atualizarFoto(Long id, MultipartFile foto) throws IOException {
+        String contentType = foto.getContentType();
+        if (contentType == null || !contentType.startsWith("image/")) {
+            throw new IllegalArgumentException("Arquivo deve ser uma imagem");
+        }
+
+        var usuario = usuarioRepository.findById(id)
+                .orElseThrow(() -> new EntidadeNaoEncontradaException(Usuario.class));
+
+        usuario.setFoto(foto.getBytes());
+        usuarioRepository.save(usuario);
+    }
+
     public UsuarioDTO atualizar(Long id, AtualizaUsuarioDTO dto) {
         var usuario = usuarioRepository.findById(id)
                 .orElseThrow(() -> new EntidadeNaoEncontradaException("Usuário não encontrado"));
@@ -37,9 +53,6 @@ public class UsuarioService {
         if (dto.nome() != null) usuario.setNome(dto.nome());
 
         if (dto.usuario() != null) usuario.setUsuario(dto.usuario());
-
-//        if (dto.foto() != null) usuario.setFoto(dto.foto());
-
 
         return new UsuarioDTO(usuarioRepository.save(usuario));
     }

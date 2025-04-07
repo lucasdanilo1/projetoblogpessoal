@@ -24,8 +24,6 @@ public class Usuario {
 
     private String senha;
 
-    @Lob
-    @Column(columnDefinition = "BYTEA")
     private byte[] foto;
 
     @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, fetch = FetchType.LAZY)

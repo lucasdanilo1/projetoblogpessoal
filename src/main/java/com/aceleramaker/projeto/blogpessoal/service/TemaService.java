@@ -1,6 +1,7 @@
 package com.aceleramaker.projeto.blogpessoal.service;
 
 import com.aceleramaker.projeto.blogpessoal.controller.schema.AtualizaTemaDTO;
+import com.aceleramaker.projeto.blogpessoal.controller.schema.CriarTemaDTO;
 import com.aceleramaker.projeto.blogpessoal.controller.schema.TemaDTO;
 import com.aceleramaker.projeto.blogpessoal.model.Tema;
 import com.aceleramaker.projeto.blogpessoal.model.exception.EntidadeNaoEncontradaException;
@@ -18,8 +19,8 @@ public class TemaService {
         this.temaRepository = temaRepository;
     }
 
-    public TemaDTO criar(Tema tema) {
-        return new TemaDTO(temaRepository.save(tema));
+    public TemaDTO criar(CriarTemaDTO tema) {
+        return new TemaDTO(temaRepository.save(new Tema(tema)));
     }
 
     public TemaDTO atualizar(Long id, AtualizaTemaDTO dto) {

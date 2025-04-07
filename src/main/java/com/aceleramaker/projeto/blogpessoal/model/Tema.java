@@ -1,5 +1,6 @@
 package com.aceleramaker.projeto.blogpessoal.model;
 
+import com.aceleramaker.projeto.blogpessoal.controller.schema.CriarTemaDTO;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -21,4 +22,9 @@ public class Tema {
 
     @OneToMany(mappedBy = "tema", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Collection<Postagem> postagens;
+
+    public Tema(CriarTemaDTO dto){
+        this.descricao = dto.descricao();
+    }
+
 }

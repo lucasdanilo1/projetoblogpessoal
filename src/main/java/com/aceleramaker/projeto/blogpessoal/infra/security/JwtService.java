@@ -1,71 +1,51 @@
 package com.aceleramaker.projeto.blogpessoal.infra.security;
 
-import com.aceleramaker.projeto.blogpessoal.model.Usuario;
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.io.Decoders;
-import io.jsonwebtoken.security.Keys;
+import com.aceleramaker.projeto.blogpessoal.model.UsuarioLogin;
+import com.auth0.jwt.JWT;
+import com.auth0.jwt.algorithms.Algorithm;
+import com.auth0.jwt.exceptions.JWTCreationException;
+import com.auth0.jwt.exceptions.JWTVerificationException;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
-import javax.crypto.SecretKey;
-import java.util.Date;
-import java.util.function.Function;
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 
 @Service
 public class JwtService {
 
-    @Value("${security.jwt.secret}")
-    private String secretKey;
+    @Value("${api.security.token.secret}")
+    private String secret;
 
-    @Value("${security.jwt.expiration-time}")
-    private long jwtExpiration;
-
-    public String extrairUsuario(String token) {
-        return extractClaim(token, Claims::getSubject);
+    public String geradorToken(UsuarioLogin usuario) {
+        try {
+            Algorithm algorithm = Algorithm.HMAC256(secret);
+            return JWT
+                    .create()
+                    .withIssuer("acelera")
+                    .withSubject(usuario.getUsuario().getUsuario())
+                    .withExpiresAt(gerarDataDeExpiracao())
+                    .sign(algorithm);
+        } catch (JWTCreationException exception) {
+            throw new RuntimeException("Error ao gerar o token", exception);
+        }
     }
 
-    public <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {
-        final Claims claims = extractAllClaims(token);
-        return claimsResolver.apply(claims);
+    public String validarToken(String token) {
+        try {
+            Algorithm algorithm = Algorithm.HMAC256(secret);
+            return JWT
+                    .require(algorithm)
+                    .withIssuer("acelera")
+                    .build().verify(token)
+                    .getSubject();
+        } catch (JWTVerificationException exception) {
+            throw new JWTVerificationException("Token não autorizado");
+        }
     }
 
-    public String generateToken(Usuario usuario) {
-        return buildToken(usuario, jwtExpiration);
-    }
-
-    public long getExpirationTime() {
-        return jwtExpiration;
-    }
-
-    private String buildToken(Usuario usuario, long expiration) {
-        return Jwts.builder().subject(usuario.getUsuario()).issuedAt(new Date(System.currentTimeMillis()))
-                .expiration(new Date(System.currentTimeMillis() + expiration)).signWith(getSignInKey()).compact();
-    }
-
-    public boolean isTokenValid(String token, UserDetails userDetails) {
-        final String username = extrairUsuario(token);
-        return (username.equals(userDetails.getUsername())) && !isTokenExpired(token);
-    }
-
-    private boolean isTokenExpired(String token) {
-        final var dateNow = new Date();
-        final var expiration = extractExpiration(token);
-
-        return expiration.before(dateNow);
-    }
-
-    private Date extractExpiration(String token) {
-        return extractClaim(token, Claims::getExpiration);
-    }
-
-    private Claims extractAllClaims(String token) {
-        return Jwts.parser().verifyWith(getSignInKey()).build().parseSignedClaims(token).getPayload();
-    }
-
-    private SecretKey getSignInKey() {
-        byte[] keyBytes = Decoders.BASE64.decode(secretKey);
-        return Keys.hmacShaKeyFor(keyBytes);
+    public Instant gerarDataDeExpiracao() {
+        return LocalDateTime.now().plusHours(2).toInstant(ZoneOffset.of("-03:00"));
     }
 }

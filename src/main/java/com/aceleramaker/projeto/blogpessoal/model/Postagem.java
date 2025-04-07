@@ -25,11 +25,11 @@ public class Postagem {
 
     private LocalDateTime data;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.REMOVE)
     @JoinColumn(name = "tema_id")
     private Tema tema;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.REMOVE)
     @JoinColumn(name = "usuario_id")
     private Usuario usuario;
 

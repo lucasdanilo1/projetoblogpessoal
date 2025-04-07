@@ -2,13 +2,13 @@ package com.aceleramaker.projeto.blogpessoal.repository;
 
 import com.aceleramaker.projeto.blogpessoal.controller.schema.FiltrosUsuarioDTO;
 import com.aceleramaker.projeto.blogpessoal.model.Usuario;
-import com.aceleramaker.projeto.blogpessoal.model.UsuarioLogin;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
-import org.springframework.security.core.userdetails.UserDetails;
+
+import java.util.Optional;
 
 public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
     boolean existsByUsuario(String usuario);
@@ -19,5 +19,5 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
     """)
     Page<Usuario> buscarComFiltros(@Param("filtros") FiltrosUsuarioDTO filtros, Pageable pageable);
 
-    UserDetails findByUsuario(String usuario);
+    Optional<Usuario> findByUsuario(String usuario);
 }

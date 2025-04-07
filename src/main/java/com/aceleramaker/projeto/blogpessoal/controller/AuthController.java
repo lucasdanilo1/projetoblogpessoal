@@ -5,71 +5,85 @@ import com.aceleramaker.projeto.blogpessoal.controller.schema.LoginRequestDTO;
 import com.aceleramaker.projeto.blogpessoal.infra.security.JwtService;
 import com.aceleramaker.projeto.blogpessoal.model.Usuario;
 import com.aceleramaker.projeto.blogpessoal.model.UsuarioLogin;
-import com.aceleramaker.projeto.blogpessoal.model.exception.EntidadeNaoEncontradaException;
 import com.aceleramaker.projeto.blogpessoal.model.exception.UsuarioJaCadastradoException;
 import com.aceleramaker.projeto.blogpessoal.repository.UsuarioLoginRepository;
 import com.aceleramaker.projeto.blogpessoal.repository.UsuarioRepository;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
-import jakarta.persistence.EntityExistsException;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
-
-import java.io.IOException;
-import java.time.Instant;
-
-import static com.aceleramaker.projeto.blogpessoal.util.AuthUtils.generateTokenCookie;
 
 @RestController
 @RequestMapping("/auth")
 @RequiredArgsConstructor
 public class AuthController {
-    private final AuthenticationManager manager;
     private final JwtService jwtService;
     private final UsuarioLoginRepository usuarioLoginRepository;
     private final UsuarioRepository usuarioRepository;
+    private final AuthenticationManager authenticationManager;
 
-    @PostMapping("login")
-    @ApiResponses(value = { @ApiResponse(responseCode = "403", description = "Usuário desativado"),
-            @ApiResponse(responseCode = "400", description = "Usuário ou senha inválidos"),
-            @ApiResponse(responseCode = "401", description = "Token expirado") })
+    @PostMapping("/login")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Login bem-sucedido"),
+            @ApiResponse(responseCode = "400", description = "Dados de login inválidos"),
+            @ApiResponse(responseCode = "403", description = "Usuário desativado"),
+            @ApiResponse(responseCode = "401", description = "Não autorizado")
+    })
     @Transactional
-    public ResponseEntity<String> login(@RequestBody LoginRequestDTO loginDto,
-                                                      HttpServletResponse response) {
-        var loginSenha = new UsernamePasswordAuthenticationToken(loginDto.usuario(), loginDto.senha());
+    public ResponseEntity<String> login(
+            @Valid @RequestBody LoginRequestDTO loginDto,
+            HttpServletResponse response) {
 
-        var auth = this.manager.authenticate(loginSenha);
+        UsernamePasswordAuthenticationToken authenticationToken =
+                new UsernamePasswordAuthenticationToken(loginDto.usuario(), loginDto.senha());
 
-        var usuario = (Usuario) auth.getPrincipal();
+        var auth = authenticationManager.authenticate(authenticationToken);
 
-        var usuarioLogin = usuarioLoginRepository.save(UsuarioLogin.builder()
-                .usuario(usuario)
-                .dataExpiracao(Instant.ofEpochMilli(this.jwtService.getExpirationTime())).build());
+        UsuarioLogin usuario = (UsuarioLogin) auth.getPrincipal();
 
-        usuario.setUsuarioLogin(usuarioLogin);
+        String jwtToken = jwtService.geradorToken(usuario);
 
-        usuarioRepository.save(usuario);
+        usuario.setToken(jwtToken);
+        usuario.setDataExpiracao(jwtService.gerarDataDeExpiracao());
 
-        var jwtToken = this.jwtService.generateToken(usuario);
+        usuarioLoginRepository.save(usuario);
 
-        response.addCookie(
-                generateTokenCookie("acessToken", jwtToken, this.jwtService.getExpirationTime(), "/", true));
+        Cookie tokenCookie = generateTokenCookie(
+                "accessToken",
+                jwtToken,
+                jwtService.gerarDataDeExpiracao().toEpochMilli(),
+                "/",
+                true,
+                true
+        );
 
-        return ResponseEntity.ok(jwtToken);
+        response.addCookie(tokenCookie);
+
+        return ResponseEntity.ok().body(jwtToken);
+
+    }
+
+    private Cookie generateTokenCookie(String name, String value, long maxAge,
+                                       String path, boolean httpOnly, boolean secure) {
+        Cookie cookie = new Cookie(name, value);
+        cookie.setMaxAge((int) (maxAge / 1000));
+        cookie.setPath(path);
+        cookie.setHttpOnly(httpOnly);
+        cookie.setSecure(secure);
+        return cookie;
     }
 
     @PostMapping("registrar")
     public ResponseEntity<Void> registrar(@Valid @RequestBody DadosCadastroUsuario dados) {
-        if(usuarioRepository.findByUsuario(dados.usuario()) != null)
+        if(usuarioRepository.findByUsuario(dados.usuario()).isPresent())
             throw new UsuarioJaCadastradoException();
 
         String senhaEncriptada = new BCryptPasswordEncoder().encode(dados.senha());
@@ -79,19 +93,14 @@ public class AuthController {
                 .nome(dados.nome())
                 .build();
 
+        var usuarioLogin = UsuarioLogin.builder()
+                .usuario(usuario)
+                .build();
+
+        usuario.setUsuarioLogin(usuarioLogin);
+        usuarioLogin.setUsuario(usuario);
         usuarioRepository.save(usuario);
-        return ResponseEntity.ok().build();
-    }
-
-    @PatchMapping(value = "foto/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<Void> atualizarFoto(
-            @PathVariable Long id,
-            @RequestPart MultipartFile foto) throws IOException {
-
-        var usuario = usuarioRepository.findById(id).orElseThrow(() -> new EntidadeNaoEncontradaException(Usuario.class));
-
-        usuario.setFoto(foto.getBytes());
-        usuarioRepository.save(usuario);
+        usuarioLoginRepository.save(usuarioLogin);
         return ResponseEntity.ok().build();
     }
 }
