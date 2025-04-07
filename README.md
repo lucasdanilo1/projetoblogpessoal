@@ -23,7 +23,7 @@ git clone https://github.com/lucasdanilo1/projetoblogpessoal/
 #### Passo 2 - Acesse a pasta do projeto
 
 ```shell
-cd projetoblogpessoal
+cd projetoblogpessoal/ambiente
 ```
 
 #### Passo 3 - Execute o docker-compose
