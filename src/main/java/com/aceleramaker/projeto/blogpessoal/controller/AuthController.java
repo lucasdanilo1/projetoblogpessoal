@@ -5,11 +5,13 @@ import com.aceleramaker.projeto.blogpessoal.controller.schema.LoginRequestDTO;
 import com.aceleramaker.projeto.blogpessoal.infra.security.JwtService;
 import com.aceleramaker.projeto.blogpessoal.model.Usuario;
 import com.aceleramaker.projeto.blogpessoal.model.UsuarioLogin;
+import com.aceleramaker.projeto.blogpessoal.model.exception.EntidadeNaoEncontradaException;
 import com.aceleramaker.projeto.blogpessoal.model.exception.UsuarioJaCadastradoException;
 import com.aceleramaker.projeto.blogpessoal.repository.UsuarioLoginRepository;
 import com.aceleramaker.projeto.blogpessoal.repository.UsuarioRepository;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import jakarta.persistence.EntityExistsException;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
@@ -65,11 +67,8 @@ public class AuthController {
         return ResponseEntity.ok(jwtToken);
     }
 
-    @PostMapping(value = "registrar", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<Void> registrar(
-            @Valid @RequestPart("dados") DadosCadastroUsuario dados,
-            @RequestPart(value = "foto", required = false) MultipartFile foto) throws IOException {
-
+    @PostMapping("registrar")
+    public ResponseEntity<Void> registrar(@Valid @RequestBody DadosCadastroUsuario dados) {
         if(usuarioRepository.findByUsuario(dados.usuario()) != null)
             throw new UsuarioJaCadastradoException();
 
@@ -78,9 +77,20 @@ public class AuthController {
                 .usuario(dados.usuario())
                 .senha(senhaEncriptada)
                 .nome(dados.nome())
-                .foto(foto != null ? foto.getBytes() : null)
                 .build();
 
+        usuarioRepository.save(usuario);
+        return ResponseEntity.ok().build();
+    }
+
+    @PatchMapping(value = "foto/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<Void> atualizarFoto(
+            @PathVariable Long id,
+            @RequestPart MultipartFile foto) throws IOException {
+
+        var usuario = usuarioRepository.findById(id).orElseThrow(() -> new EntidadeNaoEncontradaException(Usuario.class));
+
+        usuario.setFoto(foto.getBytes());
         usuarioRepository.save(usuario);
         return ResponseEntity.ok().build();
     }
