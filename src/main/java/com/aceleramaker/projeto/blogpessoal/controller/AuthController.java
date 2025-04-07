@@ -20,6 +20,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.time.Instant;
@@ -66,7 +67,9 @@ public class AuthController {
 
     @PostMapping(value = "registrar", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<Void> registrar(
-            @Valid @ModelAttribute DadosCadastroUsuario dados) throws IOException {
+            @Valid @RequestPart("dados") DadosCadastroUsuario dados,
+            @RequestPart(value = "foto", required = false) MultipartFile foto) throws IOException {
+
         if(usuarioRepository.findByUsuario(dados.usuario()) != null)
             throw new UsuarioJaCadastradoException();
 
@@ -75,7 +78,7 @@ public class AuthController {
                 .usuario(dados.usuario())
                 .senha(senhaEncriptada)
                 .nome(dados.nome())
-                .foto(dados.foto() != null ? dados.foto().getBytes() : null)
+                .foto(foto != null ? foto.getBytes() : null)
                 .build();
 
         usuarioRepository.save(usuario);
