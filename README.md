@@ -29,7 +29,7 @@ cd projetoblogpessoal/ambiente
 #### Passo 3 - Execute o docker-compose
 
 ```shell
-docker-compose up
+docker compose up
 ```
 
 -------------------------------------------------------------------------------------------------------------
