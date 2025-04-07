@@ -13,18 +13,6 @@ services:
     volumes:
       - pgdata_app:/var/lib/postgresql/data
 
-  banco_sonar:
-    container_name: sonarqube-db
-    image: postgres:16.1
-    environment:
-      - POSTGRES_USER=sonaruser
-      - POSTGRES_PASSWORD=sonarpass
-      - POSTGRES_DB=sonarqube
-    networks:
-      - services
-    volumes:
-      - pgdata_sonar:/var/lib/postgresql/data
-
   blogpessoal:
     container_name: blogpessoal-api
     depends_on:
