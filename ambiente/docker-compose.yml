@@ -1,5 +1,5 @@
 services:
-  banco_app:
+  blogpessoal-db:
     container_name: blogpessoal-db
     image: postgres:16.1
     environment:
@@ -16,7 +16,7 @@ services:
   blogpessoal:
     container_name: blogpessoal-api
     depends_on:
-      banco_app:
+      blogpessoal-db:
         condition: service_started
     build:
       context: ../
