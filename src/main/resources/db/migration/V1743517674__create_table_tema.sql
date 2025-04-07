@@ -1,5 +1,5 @@
 CREATE TABLE tema
 (
-    id        BIGINT PRIMARY KEY,
+    id        BIGSERIAL PRIMARY KEY,
     descricao VARCHAR(255) NOT NULL
 );

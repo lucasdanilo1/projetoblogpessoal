@@ -25,7 +25,7 @@ public class TemaService {
 
     public TemaDTO atualizar(Long id, AtualizaTemaDTO dto) {
         var tema = temaRepository.findById(id)
-                .orElseThrow(() -> new EntidadeNaoEncontradaException(Tema.class));
+                .orElseThrow(() -> new EntidadeNaoEncontradaException("Tema"));
 
         if (dto.descricao() != null) tema.setDescricao(dto.descricao());
 

@@ -33,10 +33,10 @@ public class PostagemService {
 
     public PostagemDTO criar(CriarPostagemDTO dto) {
         var usuario = usuarioRepository.findById(dto.usuarioId())
-                .orElseThrow(() -> new EntidadeNaoEncontradaException(Usuario.class));
+                .orElseThrow(() -> new EntidadeNaoEncontradaException("Usuario"));
 
         var tema = temaRepository.findById(dto.temaId())
-                .orElseThrow(() -> new EntidadeNaoEncontradaException(Tema.class));
+                .orElseThrow(() -> new EntidadeNaoEncontradaException("Tema"));
 
         Postagem postagem = new Postagem(dto, usuario, tema);
 
@@ -45,7 +45,7 @@ public class PostagemService {
 
     public PostagemDTO atualizar(Long postagemId, AtualizaPostagemDTO dto) {
         var postagem = postagemRepository.findById(postagemId)
-                .orElseThrow(() -> new EntidadeNaoEncontradaException(Postagem.class));
+                .orElseThrow(() -> new EntidadeNaoEncontradaException("Postagem"));
 
         if (dto.titulo() != null) postagem.setTitulo(postagem.getTitulo());
 
@@ -53,7 +53,7 @@ public class PostagemService {
 
         if (dto.temaId() != null) {
             var tema = temaRepository.findById(postagem.getTema().getId())
-                    .orElseThrow(() -> new EntidadeNaoEncontradaException(Tema.class));
+                    .orElseThrow(() -> new EntidadeNaoEncontradaException("Tema"));
             postagem.setTema(tema);
         }
 

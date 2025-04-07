@@ -1,9 +1,12 @@
 package com.aceleramaker.projeto.blogpessoal.controller.schema;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+
 public record CriarPostagemDTO(
-        String titulo,
-        String texto,
-        Long temaId,
-        Long usuarioId
+        @NotBlank String titulo,
+        @NotBlank String texto,
+        @NotNull Long temaId,
+        @NotNull Long usuarioId
 ) {
 }

@@ -37,7 +37,7 @@ public class UsuarioService {
         }
 
         var usuario = usuarioRepository.findById(id)
-                .orElseThrow(() -> new EntidadeNaoEncontradaException(Usuario.class));
+                .orElseThrow(() -> new EntidadeNaoEncontradaException("Usuario"));
 
         usuario.setFoto(foto.getBytes());
         usuarioRepository.save(usuario);

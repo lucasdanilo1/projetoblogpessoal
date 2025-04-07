@@ -1,5 +1,9 @@
 package com.aceleramaker.projeto.blogpessoal.infra.config;
 
+import com.aceleramaker.projeto.blogpessoal.model.exception.EntidadeNaoEncontradaException;
+import com.aceleramaker.projeto.blogpessoal.model.exception.UsuarioExistenteException;
+import com.aceleramaker.projeto.blogpessoal.model.exception.UsuarioJaCadastradoException;
+import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -56,14 +60,14 @@ public class GlobalExceptionHandler {
         return handleBeanValidationException(ex);
     }
 
-//    @ExceptionHandler(value = { ExpiredJwtException.class })
-//    @ResponseStatus(HttpStatus.UNAUTHORIZED) // Changed from custom 498 to standard 401
-//    public ProblemDetail handleExpiredJwtException(ExpiredJwtException ex) {
-//        return getProblemDetail(HttpServletResponse.SC_UNAUTHORIZED, "Token expirado ou inválido.", ex);
-//    }
+    @ExceptionHandler(value = { ExpiredJwtException.class })
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    public ProblemDetail handleExpiredJwtException(ExpiredJwtException ex) {
+        return getProblemDetail(HttpServletResponse.SC_UNAUTHORIZED, "Token expirado ou inválido.", ex);
+    }
 
     @ExceptionHandler(value = { UsernameNotFoundException.class })
-    @ResponseStatus(HttpStatus.NOT_FOUND) // Standard Spring Security behavior maps this often to 401, but 404 can also be valid
+    @ResponseStatus(HttpStatus.NOT_FOUND)
     public ProblemDetail handleUsernameNotFoundException(UsernameNotFoundException ex) {
         return getProblemDetail(HttpServletResponse.SC_NOT_FOUND, ex.getMessage(), ex);
     }
@@ -78,6 +82,24 @@ public class GlobalExceptionHandler {
     @ResponseStatus(HttpStatus.FORBIDDEN)
     public ProblemDetail handleAccessDeniedException(AccessDeniedException ex) {
         return getProblemDetail(HttpServletResponse.SC_FORBIDDEN, "Acesso negado.", ex);
+    }
+
+    @ExceptionHandler(value = { EntidadeNaoEncontradaException.class })
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public ProblemDetail handleEntidadeNaoEncontradaException(EntidadeNaoEncontradaException ex) {
+        return getProblemDetail(HttpServletResponse.SC_NOT_FOUND, ex.getMessage(), ex);
+    }
+
+    @ExceptionHandler(value = { UsuarioExistenteException.class })
+    @ResponseStatus(HttpStatus.CONFLICT)
+    public ProblemDetail handleUsuarioExistenteException(UsuarioExistenteException ex) {
+        return getProblemDetail(HttpServletResponse.SC_CONFLICT, ex.getMessage(), ex);
+    }
+
+    @ExceptionHandler(value = { UsuarioJaCadastradoException.class })
+    @ResponseStatus(HttpStatus.CONFLICT)
+    public ProblemDetail handleUsuarioJaCadastradoException(UsuarioJaCadastradoException ex) {
+        return getProblemDetail(HttpServletResponse.SC_CONFLICT, ex.getMessage(), ex);
     }
 
     private ProblemDetail getProblemDetail(int statusCode, String defaultDetail, Exception ex) {
