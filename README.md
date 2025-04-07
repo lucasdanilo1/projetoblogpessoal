@@ -5,7 +5,7 @@
 <div>
 <img height="30" width="40" src="https://github.com/tandpfun/skill-icons/blob/main/icons/Java-Light.svg"/>
 <img height="30" width="40" src="https://github.com/tandpfun/skill-icons/blob/main/icons/Spring-Light.svg" />
-<img height="30" width="40" src="https://github.com/tandpfun/skill-icons/blob/main/icons/MySQL-Light.svg" />
+<img height="30" width="40" src="https://github.com/tandpfun/skill-icons/blob/main/icons/Postgres-Light.svg" />
 <img height="30" width="40" src="https://github.com/tandpfun/skill-icons/blob/main/icons/Docker.svg"/>
 </div>
 
