@@ -10,8 +10,6 @@ RUN mvn clean package -DskipTests
 
 FROM eclipse-temurin:21-jre
 
-RUN groupadd -r nonroot && useradd -r -g nonroot nonroot
-
 WORKDIR /aceleramaker
 
 COPY --from=build /aceleramaker/target/*.jar /aceleramaker/blogpessoal.jar
