@@ -1,6 +1,4 @@
-# Blog Pessoal
-
-API Restful que permite criar e gerenciar conteúdo para um blog pessoal, incluindo posts, usuários e potencialmente comentários.
+# Desafio Acelera Maker
 
 ### Tecnologias utilizadas
 
@@ -19,5 +17,23 @@ API Restful que permite criar e gerenciar conteúdo para um blog pessoal, inclui
 
 ```shell
 cd \
-git clone [https://github.com/lucasdanilo1/desafio-triagil/](https://github.com/lucasdanilo1/desafio-triagil/)
+git clone https://github.com/lucasdanilo1/projetoblogpessoal/
 ```
+
+#### Passo 2 - Acesse a pasta do projeto
+
+```shell
+cd projetoblogpessoal
+```
+
+#### Passo 3 - Execute o docker-compose
+
+```shell
+docker-compose up
+```
+
+-------------------------------------------------------------------------------------------------------------
+
+Após a conclusão do processo, a API estará acessível para disparo de requisições através do seguinte endereço: http://localhost:8080.
+
+Além disso, para mais detalhes sobre os endpoints, a aplicação foi documentada utilizando o Swagger. Você pode acessar essa documentação em: http://localhost:8080/swagger-ui/index.html#/
