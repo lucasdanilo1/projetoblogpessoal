@@ -1,0 +1,356 @@
+{
+  "name": "blog",
+  "version": "1",
+  "items": [
+    {
+      "type": "http",
+      "name": "registro",
+      "filename": "registro.bru",
+      "seq": 1,
+      "request": {
+        "url": "http://localhost:8080/auth/registrar",
+        "method": "POST",
+        "headers": [],
+        "params": [],
+        "body": {
+          "mode": "json",
+          "json": "{\n  \"usuario\": \"ABCDe\",\n  \"senha\": \"123\",\n  \"nome\": \"lucas dan\"\n}",
+          "formUrlEncoded": [],
+          "multipartForm": [],
+          "file": []
+        },
+        "script": {},
+        "vars": {},
+        "assertions": [],
+        "tests": "",
+        "docs": "",
+        "auth": {
+          "mode": "inherit"
+        }
+      }
+    },
+    {
+      "type": "http",
+      "name": "login",
+      "filename": "login.bru",
+      "seq": 2,
+      "request": {
+        "url": "http://localhost:8080/auth/login",
+        "method": "POST",
+        "headers": [],
+        "params": [],
+        "body": {
+          "mode": "json",
+          "json": "{\n  \"usuario\": \"ABCDe\",\n  \"senha\": \"123\"\n}",
+          "formUrlEncoded": [],
+          "multipartForm": [],
+          "file": []
+        },
+        "script": {},
+        "vars": {},
+        "assertions": [],
+        "tests": "",
+        "docs": "",
+        "auth": {
+          "mode": "inherit"
+        }
+      }
+    },
+    {
+      "type": "folder",
+      "name": "Postagem",
+      "filename": "Postagem",
+      "root": {
+        "meta": {
+          "name": "Postagem"
+        }
+      },
+      "items": [
+        {
+          "type": "http",
+          "name": "Atualizar Postagem",
+          "filename": "Atualizar Postagem.bru",
+          "seq": 1,
+          "request": {
+            "url": "http://localhost:8080/api/postagens/1",
+            "method": "PATCH",
+            "headers": [],
+            "params": [],
+            "body": {
+              "mode": "json",
+              "json": "{\n  \"titulo\": \"Título Atualizado\",\n  \"texto\": \"Novo conteúdo\",\n  \"temaId\": 2,\n  \"usuarioId\": 1\n}",
+              "formUrlEncoded": [],
+              "multipartForm": [],
+              "file": []
+            },
+            "script": {},
+            "vars": {},
+            "assertions": [],
+            "tests": "",
+            "docs": "",
+            "auth": {
+              "mode": "bearer",
+              "bearer": {
+                "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJhY2VsZXJhIiwic3ViIjoiQUJDRGUiLCJleHAiOjE3NDQwNjA3OTl9.XZUdPvjYpHxFAsX0Vrci7K5s40gRqJNpLZi3sQta_3w"
+              }
+            }
+          }
+        },
+        {
+          "type": "http",
+          "name": "Criar Postagem",
+          "filename": "Criar Postagem.bru",
+          "seq": 2,
+          "request": {
+            "url": "http://localhost:8080/api/postagens",
+            "method": "POST",
+            "headers": [],
+            "params": [],
+            "body": {
+              "mode": "json",
+              "json": "{\n  \"titulo\": \"Minha Primeira Postagem\",\n  \"texto\": \"Conteúdo da postagem\",\n  \"temaId\": 1,\n  \"usuarioId\": 1\n}",
+              "formUrlEncoded": [],
+              "multipartForm": [],
+              "file": []
+            },
+            "script": {},
+            "vars": {},
+            "assertions": [],
+            "tests": "",
+            "docs": "",
+            "auth": {
+              "mode": "bearer",
+              "bearer": {
+                "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJhY2VsZXJhIiwic3ViIjoiQUJDRGUiLCJleHAiOjE3NDQwNjg4MTh9.lOBzAYzkRXl9SFYrDwWSxuiNMaYJPfDbXHLZMjKdCHU"
+              }
+            }
+          }
+        },
+        {
+          "type": "http",
+          "name": "Postagens",
+          "filename": "Postagens.bru",
+          "seq": 3,
+          "request": {
+            "url": "http://localhost:8080/api/postagens",
+            "method": "GET",
+            "headers": [],
+            "params": [],
+            "body": {
+              "mode": "json",
+              "json": "{\n  \"titulo\": \"adasd\"\n}",
+              "formUrlEncoded": [],
+              "multipartForm": [],
+              "file": []
+            },
+            "script": {},
+            "vars": {},
+            "assertions": [],
+            "tests": "",
+            "docs": "",
+            "auth": {
+              "mode": "bearer",
+              "bearer": {
+                "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJhY2VsZXJhIiwic3ViIjoiQUJDRGUiLCJleHAiOjE3NDQwNjg4MTh9.lOBzAYzkRXl9SFYrDwWSxuiNMaYJPfDbXHLZMjKdCHU"
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "type": "folder",
+      "name": "Usuario",
+      "filename": "Usuario",
+      "root": {
+        "meta": {
+          "name": "Usuario"
+        }
+      },
+      "items": [
+        {
+          "type": "http",
+          "name": "Atualizar Usuario",
+          "filename": "Atualizar Usuario.bru",
+          "seq": 1,
+          "request": {
+            "url": "http://localhost:8080/api/usuarios/1",
+            "method": "PATCH",
+            "headers": [],
+            "params": [],
+            "body": {
+              "mode": "json",
+              "json": "{\n  \"nome\": \"João Silva\",\n  \"usuario\": \"joao.silva\",\n  \"senha\": \"nova123\"\n}",
+              "formUrlEncoded": [],
+              "multipartForm": [],
+              "file": []
+            },
+            "script": {},
+            "vars": {},
+            "assertions": [],
+            "tests": "",
+            "docs": "",
+            "auth": {
+              "mode": "bearer",
+              "bearer": {
+                "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJhY2VsZXJhIiwic3ViIjoiQUJDRGUiLCJleHAiOjE3NDQwNjA3OTl9.XZUdPvjYpHxFAsX0Vrci7K5s40gRqJNpLZi3sQta_3w"
+              }
+            }
+          }
+        },
+        {
+          "type": "http",
+          "name": "Atualizar Foto Usuario",
+          "filename": "Atualizar Foto Usuario.bru",
+          "seq": 2,
+          "request": {
+            "url": "http://localhost:8080/api/usuarios/foto/1",
+            "method": "PATCH",
+            "headers": [],
+            "params": [],
+            "body": {
+              "mode": "multipartForm",
+              "formUrlEncoded": [],
+              "multipartForm": [
+                {
+                  "type": "file",
+                  "name": "foto",
+                  "value": [
+                    "C:\\Users\\lucas.rodrigues\\Downloads\\IMG_1833.JPG"
+                  ],
+                  "enabled": true
+                }
+              ],
+              "file": []
+            },
+            "script": {},
+            "vars": {},
+            "assertions": [],
+            "tests": "",
+            "docs": "",
+            "auth": {
+              "mode": "bearer",
+              "bearer": {
+                "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJhY2VsZXJhIiwic3ViIjoiQUJDRGUiLCJleHAiOjE3NDQwNzMwNjF9.f4Hzxgo4eYX74vOQOMYN83OmxdMf5D2Y0KKRqC_eUjE"
+              }
+            }
+          }
+        },
+        {
+          "type": "http",
+          "name": "Usuarios",
+          "filename": "Usuarios.bru",
+          "seq": 3,
+          "request": {
+            "url": "http://localhost:8080/api/usuarios",
+            "method": "GET",
+            "headers": [],
+            "params": [],
+            "body": {
+              "mode": "json",
+              "json": "{\n\n}",
+              "formUrlEncoded": [],
+              "multipartForm": [],
+              "file": []
+            },
+            "script": {},
+            "vars": {},
+            "assertions": [],
+            "tests": "",
+            "docs": "",
+            "auth": {
+              "mode": "bearer",
+              "bearer": {
+                "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJhY2VsZXJhIiwic3ViIjoiQUJDRGUiLCJleHAiOjE3NDQwNjg4MTh9.lOBzAYzkRXl9SFYrDwWSxuiNMaYJPfDbXHLZMjKdCHU"
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "type": "folder",
+      "name": "Tema",
+      "filename": "Tema",
+      "root": {
+        "meta": {
+          "name": "Tema"
+        }
+      },
+      "items": [
+        {
+          "type": "http",
+          "name": "Cria Tema",
+          "filename": "Cria Tema.bru",
+          "seq": 1,
+          "request": {
+            "url": "http://localhost:8080/api/temas",
+            "method": "POST",
+            "headers": [],
+            "params": [],
+            "body": {
+              "mode": "json",
+              "json": "{\n  \"descricao\": \"\"\n}",
+              "formUrlEncoded": [],
+              "multipartForm": [],
+              "file": []
+            },
+            "script": {},
+            "vars": {},
+            "assertions": [],
+            "tests": "",
+            "docs": "",
+            "auth": {
+              "mode": "bearer",
+              "bearer": {
+                "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJhY2VsZXJhIiwic3ViIjoiQUJDRGUiLCJleHAiOjE3NDQwNjg4MTh9.lOBzAYzkRXl9SFYrDwWSxuiNMaYJPfDbXHLZMjKdCHU"
+              }
+            }
+          }
+        },
+        {
+          "type": "http",
+          "name": "Temas",
+          "filename": "Temas.bru",
+          "seq": 2,
+          "request": {
+            "url": "http://localhost:8080/api/temas",
+            "method": "GET",
+            "headers": [],
+            "params": [],
+            "body": {
+              "mode": "json",
+              "json": "{\n\n}",
+              "formUrlEncoded": [],
+              "multipartForm": [],
+              "file": []
+            },
+            "script": {},
+            "vars": {},
+            "assertions": [],
+            "tests": "",
+            "docs": "",
+            "auth": {
+              "mode": "bearer",
+              "bearer": {
+                "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJhY2VsZXJhIiwic3ViIjoiQUJDRGUiLCJleHAiOjE3NDQwNjg4MTh9.lOBzAYzkRXl9SFYrDwWSxuiNMaYJPfDbXHLZMjKdCHU"
+              }
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "environments": [],
+  "brunoConfig": {
+    "version": "1",
+    "name": "blog",
+    "type": "collection",
+    "ignore": [
+      "node_modules",
+      ".git"
+    ],
+    "size": 0,
+    "filesCount": 0
+  }
+}
