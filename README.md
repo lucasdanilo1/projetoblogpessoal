@@ -34,6 +34,18 @@ docker-compose up
 
 -------------------------------------------------------------------------------------------------------------
 
+### Teste e disparo das requisições
+
 Após a conclusão do processo, a API estará acessível para disparo de requisições através do seguinte endereço: http://localhost:8080.
 
-Além disso, para mais detalhes sobre os endpoints, a aplicação foi documentada utilizando o Swagger. Você pode acessar essa documentação em: http://localhost:8080/swagger-ui/index.html#/
+É possível importar a coleção completa de requisições disponíveis na API para teste. 
+
+#### Coleção das requisições
+
+| API Collection                                                                             |
+|--------------------------------------------------------------------------------------------|
+| [![Run in Insomnia}](https://insomnia.rest/run?label=Blog%20pessoal&uri=https%3A%2F%2Fgithub.com%2Flucasdanilo1%2Fprojetoblogpessoal%2Fblob%2Fmain%2Finsomnia)|
+
+Para mais detalhes dos endpoints, a aplicação foi documentada utilizando Swagger. Você pode acessar essa documentação em: http://localhost:8080/swagger-ui/index.html#/
+
+------------------------------------------------------------------------------
