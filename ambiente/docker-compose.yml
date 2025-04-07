@@ -20,7 +20,7 @@ services:
         condition: service_started
     build:
       context: ../
-      dockerfile: /Dockerfile
+      dockerfile: ambiente/Dockerfile
     ports:
       - "8080:8080"
     networks:
