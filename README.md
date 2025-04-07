@@ -44,7 +44,7 @@ Após a conclusão do processo, a API estará acessível para disparo de requisi
 
 | API Collection                                                                             |
 |--------------------------------------------------------------------------------------------|
-| [![Run in Insomnia}](https://insomnia.rest/run?label=Blog%20pessoal&uri=https%3A%2F%2Fgithub.com%2Flucasdanilo1%2Fprojetoblogpessoal%2Fblob%2Fmain%2Finsomnia)|
+| [![Run in Insomnia}](https://insomnia.rest/images/run.svg)](https://insomnia.rest/run/?label=DESAFIO-PLACE&uri=https%3A%2F%2Fgithub.com%2Flucasdanilo1%2Fcaseplace-api%2Fblob%2Fmaster%2Finsomnia-requisicoes)|
 
 Para mais detalhes dos endpoints, a aplicação foi documentada utilizando Swagger. Você pode acessar essa documentação em: http://localhost:8080/swagger-ui/index.html#/
 
