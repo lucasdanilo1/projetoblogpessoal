@@ -38,7 +38,7 @@ public class UsuarioService {
 
         if (dto.usuario() != null) usuario.setUsuario(dto.usuario());
 
-        if (dto.foto() != null) usuario.setFoto(dto.foto());
+//        if (dto.foto() != null) usuario.setFoto(dto.foto());
 
 
         return new UsuarioDTO(usuarioRepository.save(usuario));

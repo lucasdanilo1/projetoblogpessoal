@@ -2,9 +2,7 @@ package com.aceleramaker.projeto.blogpessoal.model;
 
 import com.aceleramaker.projeto.blogpessoal.controller.schema.CriarUsuarioDTO;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.Collection;
 
@@ -12,6 +10,8 @@ import java.util.Collection;
 @Getter
 @Setter
 @NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class Usuario {
 
     @Id
@@ -24,15 +24,18 @@ public class Usuario {
 
     private String senha;
 
-    private String foto;
+    @Lob
+    @Column(columnDefinition = "BYTEA")
+    private byte[] foto;
 
     @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Collection<Postagem> postagens;
 
+    @OneToOne(mappedBy = "usuario", cascade = CascadeType.ALL)
+    private UsuarioLogin usuarioLogin;
+
     public Usuario(CriarUsuarioDTO dto) {
         this.nome = dto.nome();
         this.usuario = dto.usuario();
-        this.foto = dto.foto();
     }
-
 }

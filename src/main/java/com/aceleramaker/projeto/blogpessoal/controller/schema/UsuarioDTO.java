@@ -5,15 +5,13 @@ import com.aceleramaker.projeto.blogpessoal.model.Usuario;
 public record UsuarioDTO(
     Long id,
     String nome,
-    String usuario,
-    String foto
+    String usuario
 ) {
     public UsuarioDTO(Usuario usuario) {
         this(
             usuario.getId(),
             usuario.getNome(),
-            usuario.getUsuario(),
-            usuario.getFoto()
+            usuario.getUsuario()
         );
     }
 }

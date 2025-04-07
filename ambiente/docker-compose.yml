@@ -3,8 +3,8 @@ services:
     container_name: blogpessoal-db
     image: postgres:16.1
     environment:
-      - POSTGRES_USER=usuario
-      - POSTGRES_PASSWORD=pass
+      - POSTGRES_USER=luisguerreiro
+      - POSTGRES_PASSWORD=acelera
       - POSTGRES_DB=blogpessoal
     networks:
       - services
@@ -20,7 +20,7 @@ services:
         condition: service_started
     build:
       context: ../
-      dockerfile: ./backend/Dockerfile
+      dockerfile: /Dockerfile
     ports:
       - "8080:8080"
     networks:
