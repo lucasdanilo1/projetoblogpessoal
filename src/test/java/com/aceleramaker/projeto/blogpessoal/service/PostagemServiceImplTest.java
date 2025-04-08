@@ -23,7 +23,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
-class PostagemServiceTest {
+class PostagemServiceImplTest {
 
     @Mock
     private PostagemRepository postagemRepository;
@@ -32,12 +32,12 @@ class PostagemServiceTest {
     @Mock
     private TemaRepository temaRepository;
 
-    private PostagemService postagemService;
+    private PostagemServiceImpl postagemServiceImpl;
 
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
-        postagemService = new PostagemService(postagemRepository, usuarioRepository, temaRepository);
+        postagemServiceImpl = new PostagemServiceImpl(postagemRepository, usuarioRepository, temaRepository);
     }
 
     @Test
@@ -51,7 +51,7 @@ class PostagemServiceTest {
         when(temaRepository.findById(1L)).thenReturn(Optional.of(tema));
         when(postagemRepository.save(any())).thenReturn(new Postagem());
 
-        assertDoesNotThrow(() -> postagemService.criar(dto));
+        assertDoesNotThrow(() -> postagemServiceImpl.criar(dto));
         verify(postagemRepository).save(any());
     }
 
@@ -63,7 +63,7 @@ class PostagemServiceTest {
 
         when(postagemRepository.buscarComFiltros(any(), any())).thenReturn(page);
 
-        Page<?> resultado = postagemService.listarPostagem(filtros, pageable);
+        Page<?> resultado = postagemServiceImpl.listarPostagem(filtros, pageable);
 
         assertNotNull(resultado);
         assertFalse(resultado.isEmpty());

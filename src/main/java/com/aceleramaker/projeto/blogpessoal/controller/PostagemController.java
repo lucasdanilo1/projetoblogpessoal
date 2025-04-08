@@ -4,7 +4,7 @@ import com.aceleramaker.projeto.blogpessoal.controller.schema.AtualizaPostagemDT
 import com.aceleramaker.projeto.blogpessoal.controller.schema.CriarPostagemDTO;
 import com.aceleramaker.projeto.blogpessoal.controller.schema.FiltrosPostagemDTO;
 import com.aceleramaker.projeto.blogpessoal.controller.schema.PostagemDTO;
-import com.aceleramaker.projeto.blogpessoal.service.PostagemService;
+import com.aceleramaker.projeto.blogpessoal.service.PostagemServiceImpl;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -19,10 +19,10 @@ import org.springframework.web.bind.annotation.*;
 @Tag(name = "Postagens", description = "Endpoints para gerenciamento de postagens")
 public class PostagemController {
 
-    private final PostagemService postagemService;
+    private final PostagemServiceImpl postagemServiceImpl;
 
-    public PostagemController(PostagemService postagemService) {
-        this.postagemService = postagemService;
+    public PostagemController(PostagemServiceImpl postagemServiceImpl) {
+        this.postagemServiceImpl = postagemServiceImpl;
     }
 
     @Operation(summary = "Criar uma nova postagem")
@@ -32,7 +32,7 @@ public class PostagemController {
     })
     @PostMapping
     public ResponseEntity<PostagemDTO> criar(@RequestBody CriarPostagemDTO criarPostagemDTO) {
-        return ResponseEntity.ok(postagemService.criar(criarPostagemDTO));
+        return ResponseEntity.ok(postagemServiceImpl.criar(criarPostagemDTO));
     }
 
     @Operation(summary = "Atualizar uma postagem existente")
@@ -42,7 +42,7 @@ public class PostagemController {
     })
     @PatchMapping("/{id}")
     public ResponseEntity<PostagemDTO> atualizar(@PathVariable Long id, @RequestBody AtualizaPostagemDTO dto) {
-        return ResponseEntity.ok(postagemService.atualizar(id, dto));
+        return ResponseEntity.ok(postagemServiceImpl.atualizar(id, dto));
     }
 
     @Operation(summary = "Deletar uma postagem")
@@ -52,7 +52,7 @@ public class PostagemController {
     })
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deletar(@PathVariable Long id) {
-        postagemService.deletar(id);
+        postagemServiceImpl.deletar(id);
         return ResponseEntity.noContent().build();
     }
 
@@ -60,6 +60,6 @@ public class PostagemController {
     @ApiResponse(responseCode = "200", description = "Lista de postagens retornada com sucesso")
     @GetMapping
     public ResponseEntity<Page<PostagemDTO>> listarTodas(@RequestBody FiltrosPostagemDTO filtros, Pageable pageable) {
-        return ResponseEntity.ok(postagemService.listarPostagem(filtros, pageable));
+        return ResponseEntity.ok(postagemServiceImpl.listarPostagem(filtros, pageable));
     }
 }

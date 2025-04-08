@@ -16,17 +16,17 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
-class TemaServiceTest {
+class TemaServiceImplTest {
 
     @Mock
     private TemaRepository temaRepository;
 
-    private TemaService temaService;
+    private TemaServiceImpl temaServiceImpl;
 
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
-        temaService = new TemaService(temaRepository);
+        temaServiceImpl = new TemaServiceImpl(temaRepository);
     }
 
     @Test
@@ -34,7 +34,7 @@ class TemaServiceTest {
         var dto = new CriarTemaDTO("Descrição teste");
         when(temaRepository.save(any())).thenReturn(new Tema());
 
-        assertDoesNotThrow(() -> temaService.criar(dto));
+        assertDoesNotThrow(() -> temaServiceImpl.criar(dto));
         verify(temaRepository).save(any());
     }
 
@@ -42,7 +42,7 @@ class TemaServiceTest {
     void deveListarTodosOsTemas() {
         when(temaRepository.findAll()).thenReturn(List.of(new Tema()));
 
-        var temas = temaService.listarTodos();
+        var temas = temaServiceImpl.listarTodos();
 
         assertNotNull(temas);
         assertFalse(temas.isEmpty());
@@ -57,7 +57,7 @@ class TemaServiceTest {
         when(temaRepository.findById(1L)).thenReturn(Optional.of(tema));
         when(temaRepository.save(any())).thenReturn(tema);
 
-        assertDoesNotThrow(() -> temaService.atualizar(1L, dto));
+        assertDoesNotThrow(() -> temaServiceImpl.atualizar(1L, dto));
         verify(temaRepository).save(any());
     }
 }

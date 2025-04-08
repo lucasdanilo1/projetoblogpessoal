@@ -18,17 +18,17 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
-class UsuarioServiceTest {
+class UsuarioServiceImplTest {
 
     @Mock
     private UsuarioRepository usuarioRepository;
 
-    private UsuarioService usuarioService;
+    private UsuarioServiceImpl usuarioServiceImpl;
 
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
-        usuarioService = new UsuarioService(usuarioRepository);
+        usuarioServiceImpl = new UsuarioServiceImpl(usuarioRepository);
     }
 
     @Test
@@ -39,7 +39,7 @@ class UsuarioServiceTest {
 
         when(usuarioRepository.findById(1L)).thenReturn(Optional.of(new Usuario()));
 
-        assertDoesNotThrow(() -> usuarioService.atualizarFoto(1L, mockFile));
+        assertDoesNotThrow(() -> usuarioServiceImpl.atualizarFoto(1L, mockFile));
         verify(usuarioRepository).save(any());
     }
 
@@ -51,7 +51,7 @@ class UsuarioServiceTest {
 
         when(usuarioRepository.buscarComFiltros(any(), any())).thenReturn(page);
 
-        var resultado = usuarioService.listarUsuarios(filtros, pageable);
+        var resultado = usuarioServiceImpl.listarUsuarios(filtros, pageable);
 
         assertNotNull(resultado);
         assertFalse(resultado.isEmpty());
