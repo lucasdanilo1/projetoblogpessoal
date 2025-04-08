@@ -3,6 +3,7 @@ package com.aceleramaker.projeto.blogpessoal.model;
 import com.aceleramaker.projeto.blogpessoal.controller.schema.CriarUsuarioDTO;
 import jakarta.persistence.*;
 import lombok.*;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.util.Collection;
 
@@ -35,5 +36,9 @@ public class Usuario {
     public Usuario(CriarUsuarioDTO dto) {
         this.nome = dto.nome();
         this.usuario = dto.usuario();
+    }
+
+    public void setSenha(String senha) {
+        this.senha = new BCryptPasswordEncoder().encode(senha);
     }
 }

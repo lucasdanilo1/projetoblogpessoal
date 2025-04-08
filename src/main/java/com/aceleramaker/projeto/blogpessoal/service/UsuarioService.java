@@ -1,15 +1,16 @@
 package com.aceleramaker.projeto.blogpessoal.service;
 
 import com.aceleramaker.projeto.blogpessoal.controller.schema.AtualizaUsuarioDTO;
-import com.aceleramaker.projeto.blogpessoal.controller.schema.CriarUsuarioDTO;
 import com.aceleramaker.projeto.blogpessoal.controller.schema.FiltrosUsuarioDTO;
 import com.aceleramaker.projeto.blogpessoal.controller.schema.UsuarioDTO;
-import com.aceleramaker.projeto.blogpessoal.model.Usuario;
 import com.aceleramaker.projeto.blogpessoal.model.exception.EntidadeNaoEncontradaException;
 import com.aceleramaker.projeto.blogpessoal.model.exception.UsuarioExistenteException;
 import com.aceleramaker.projeto.blogpessoal.repository.UsuarioRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -21,13 +22,6 @@ public class UsuarioService {
 
     public UsuarioService(UsuarioRepository usuarioRepository) {
         this.usuarioRepository = usuarioRepository;
-    }
-
-    public UsuarioDTO cadastrar(CriarUsuarioDTO dto) {
-        if (usuarioRepository.existsByUsuario(dto.usuario()))
-            throw new UsuarioExistenteException();
-
-        return new UsuarioDTO(usuarioRepository.save(new Usuario(dto)));
     }
 
     public void atualizarFoto(Long id, MultipartFile foto) throws IOException {
@@ -46,13 +40,14 @@ public class UsuarioService {
     public UsuarioDTO atualizar(Long id, AtualizaUsuarioDTO dto) {
         var usuario = usuarioRepository.findById(id)
                 .orElseThrow(() -> new EntidadeNaoEncontradaException("Usuário não encontrado"));
-
         if (usuarioRepository.existsByUsuario(dto.usuario()))
             throw new UsuarioExistenteException();
 
         if (dto.nome() != null) usuario.setNome(dto.nome());
 
         if (dto.usuario() != null) usuario.setUsuario(dto.usuario());
+
+        if (dto.senha() != null) usuario.setSenha(dto.senha());
 
         return new UsuarioDTO(usuarioRepository.save(usuario));
     }
@@ -63,5 +58,18 @@ public class UsuarioService {
 
     public void deletar(Long id) {
         usuarioRepository.deleteById(id);
+    }
+
+    public String getUsuarioLogado() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication != null && authentication.isAuthenticated()) {
+            Object principal = authentication.getPrincipal();
+            if (principal instanceof UserDetails) {
+                return ((UserDetails) principal).getUsername();
+            } else {
+                return principal.toString();
+            }
+        }
+        return null;
     }
 }

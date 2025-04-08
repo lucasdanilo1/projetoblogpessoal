@@ -45,6 +45,19 @@ public class JwtService {
         }
     }
 
+    public String extrairUsuario(String token) {
+        try {
+            Algorithm algorithm = Algorithm.HMAC256(secret);
+            return JWT.require(algorithm)
+                    .withIssuer("acelera")
+                    .build()
+                    .verify(token)
+                    .getSubject();
+        } catch (JWTVerificationException exception) {
+            return null;
+        }
+    }
+
     public Instant gerarDataDeExpiracao() {
         return LocalDateTime.now().plusHours(2).toInstant(ZoneOffset.of("-03:00"));
     }

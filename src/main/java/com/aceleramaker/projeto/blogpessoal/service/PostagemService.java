@@ -5,12 +5,11 @@ import com.aceleramaker.projeto.blogpessoal.controller.schema.CriarPostagemDTO;
 import com.aceleramaker.projeto.blogpessoal.controller.schema.FiltrosPostagemDTO;
 import com.aceleramaker.projeto.blogpessoal.controller.schema.PostagemDTO;
 import com.aceleramaker.projeto.blogpessoal.model.Postagem;
-import com.aceleramaker.projeto.blogpessoal.model.Tema;
-import com.aceleramaker.projeto.blogpessoal.model.Usuario;
 import com.aceleramaker.projeto.blogpessoal.model.exception.EntidadeNaoEncontradaException;
 import com.aceleramaker.projeto.blogpessoal.repository.PostagemRepository;
 import com.aceleramaker.projeto.blogpessoal.repository.TemaRepository;
 import com.aceleramaker.projeto.blogpessoal.repository.UsuarioRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -43,6 +42,7 @@ public class PostagemService {
         return new PostagemDTO(postagemRepository.save(postagem));
     }
 
+    @Transactional
     public PostagemDTO atualizar(Long postagemId, AtualizaPostagemDTO dto) {
         var postagem = postagemRepository.findById(postagemId)
                 .orElseThrow(() -> new EntidadeNaoEncontradaException("Postagem"));
@@ -52,7 +52,7 @@ public class PostagemService {
         if (dto.texto() != null) postagem.setTexto(postagem.getTexto());
 
         if (dto.temaId() != null) {
-            var tema = temaRepository.findById(postagem.getTema().getId())
+            var tema = temaRepository.findById(dto.temaId())
                     .orElseThrow(() -> new EntidadeNaoEncontradaException("Tema"));
             postagem.setTema(tema);
         }
