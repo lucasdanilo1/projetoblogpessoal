@@ -35,7 +35,7 @@ cd projetoblogpessoal/ambiente
 docker compose up
 ```
 
-#### Não é necessário nenhuma configuração adicional - apenas se quiser rodar sem o docker - se for o caso, altere o datasource.url para localhost ao invés de blogpessoal-db (nome do container) no properties do spring.
+#### Não é necessário nenhuma configuração adicional - apenas se quiser rodar fora do container docker - se for o caso, altere o spring.datasource.url para localhost ao invés de blogpessoal-db (nome do container) no properties do spring.
 
 -------------------------------------------------------------------------------------------------------------
 
