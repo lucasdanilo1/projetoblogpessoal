@@ -17,6 +17,9 @@
 
 ```shell
 cd \
+```
+
+```shell
 git clone https://github.com/lucasdanilo1/projetoblogpessoal/
 ```
 
