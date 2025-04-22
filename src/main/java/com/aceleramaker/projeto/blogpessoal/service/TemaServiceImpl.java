@@ -3,6 +3,7 @@ package com.aceleramaker.projeto.blogpessoal.service;
 import com.aceleramaker.projeto.blogpessoal.controller.schema.AtualizaTemaDTO;
 import com.aceleramaker.projeto.blogpessoal.controller.schema.CriarTemaDTO;
 import com.aceleramaker.projeto.blogpessoal.controller.schema.TemaDTO;
+import com.aceleramaker.projeto.blogpessoal.controller.schema.TemaPostagemCountDTO;
 import com.aceleramaker.projeto.blogpessoal.model.Tema;
 import com.aceleramaker.projeto.blogpessoal.model.exception.EntidadeNaoEncontradaException;
 import com.aceleramaker.projeto.blogpessoal.repository.TemaRepository;
@@ -39,5 +40,8 @@ public class TemaServiceImpl implements TemaService {
     public void deletar(Long id) {
         temaRepository.deleteById(id);
     }
-
+    
+    public List<TemaPostagemCountDTO> contarPostagensPorTema() {
+        return temaRepository.countPostagensPorTema();
+    }
 }

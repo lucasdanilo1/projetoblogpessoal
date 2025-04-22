@@ -24,9 +24,9 @@ public record PostagemDTO(
         );
     }
 
-    private record UsuarioDTO(Long id, String nome) {
+    private record UsuarioDTO(Long id, String nome, byte[] foto) {
         public UsuarioDTO(Usuario usuario) {
-            this(usuario.getId(), usuario.getNome());
+            this(usuario.getId(), usuario.getNome(), usuario.getFoto());
         }
     }
 }

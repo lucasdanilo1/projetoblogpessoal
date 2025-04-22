@@ -13,4 +13,6 @@ public interface TemaService {
     List<TemaDTO> listarTodos();
 
     void deletar(Long id);
+    
+    List<TemaPostagemCountDTO> contarPostagensPorTema();
 }

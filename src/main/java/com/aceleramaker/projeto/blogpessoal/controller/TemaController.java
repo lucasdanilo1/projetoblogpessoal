@@ -3,6 +3,7 @@ package com.aceleramaker.projeto.blogpessoal.controller;
 import com.aceleramaker.projeto.blogpessoal.controller.schema.AtualizaTemaDTO;
 import com.aceleramaker.projeto.blogpessoal.controller.schema.CriarTemaDTO;
 import com.aceleramaker.projeto.blogpessoal.controller.schema.TemaDTO;
+import com.aceleramaker.projeto.blogpessoal.controller.schema.TemaPostagemCountDTO;
 import com.aceleramaker.projeto.blogpessoal.service.TemaServiceImpl;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -57,5 +58,12 @@ public class TemaController {
     public ResponseEntity<Void> deletar(@PathVariable Long id) {
         temaServiceImpl.deletar(id);
         return ResponseEntity.noContent().build();
+    }
+    
+    @Operation(summary = "Contar postagens por tema")
+    @ApiResponse(responseCode = "200", description = "Contagem de postagens por tema retornada com sucesso")
+    @GetMapping("/contagem-postagens")
+    public ResponseEntity<List<TemaPostagemCountDTO>> contarPostagensPorTema() {
+        return ResponseEntity.ok(temaServiceImpl.contarPostagensPorTema());
     }
 }

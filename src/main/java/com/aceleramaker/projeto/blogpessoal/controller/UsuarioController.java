@@ -51,6 +51,16 @@ public class UsuarioController {
         return ResponseEntity.ok(usuarioServiceImpl.listarUsuarios(filtros, pageable));
     }
 
+    @Operation(summary = "Buscar um usuário pelo ID")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Usuário encontrado com sucesso"),
+            @ApiResponse(responseCode = "404", description = "Usuário não encontrado")
+    })
+    @GetMapping("/{id}")
+    public ResponseEntity<UsuarioDTO> buscarPorId(@PathVariable Long id) {
+        return ResponseEntity.ok(usuarioServiceImpl.buscarPorId(id));
+    }
+
     @Operation(summary = "Deletar um usuário")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "204", description = "Usuário deletado com sucesso"),

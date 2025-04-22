@@ -25,6 +25,7 @@ public class JwtService {
                     .create()
                     .withIssuer("acelera")
                     .withSubject(usuario.getUsuario().getUsuario())
+                    .withClaim("id", usuario.getUsuario().getId())
                     .withExpiresAt(gerarDataDeExpiracao())
                     .sign(algorithm);
         } catch (JWTCreationException exception) {
@@ -42,19 +43,6 @@ public class JwtService {
                     .getSubject();
         } catch (JWTVerificationException exception) {
             throw new JWTVerificationException("Token não autorizado");
-        }
-    }
-
-    public String extrairUsuario(String token) {
-        try {
-            Algorithm algorithm = Algorithm.HMAC256(secret);
-            return JWT.require(algorithm)
-                    .withIssuer("acelera")
-                    .build()
-                    .verify(token)
-                    .getSubject();
-        } catch (JWTVerificationException exception) {
-            return null;
         }
     }
 

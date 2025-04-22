@@ -11,6 +11,8 @@ public interface UsuarioService {
 
     void atualizarFoto(Long id, MultipartFile foto) throws IOException;
 
+    UsuarioDTO buscarPorId(Long id);
+
     UsuarioDTO atualizar(Long id, AtualizaUsuarioDTO dto);
 
     Page<UsuarioDTO> listarUsuarios(FiltrosUsuarioDTO filtros, Pageable pageable);

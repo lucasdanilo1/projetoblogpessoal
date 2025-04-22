@@ -45,7 +45,7 @@ class PostagemServiceImplTest {
         var usuario = new Usuario();
         usuario.setId(1l);
         var tema = new Tema();
-        var dto = new CriarPostagemDTO("Título", "Texto", 1L, 1L);
+        var dto = new CriarPostagemDTO("Título", "Texto", 1L);
 
         when(usuarioRepository.findById(1L)).thenReturn(Optional.of(usuario));
         when(temaRepository.findById(1L)).thenReturn(Optional.of(tema));
@@ -58,7 +58,7 @@ class PostagemServiceImplTest {
     @Test
     void deveListarPostagensComFiltros() {
         var pageable = mock(Pageable.class);
-        var filtros = new FiltrosPostagemDTO("dsds", null, 1L, "jpifdsaj", 1L);
+        var filtros = new FiltrosPostagemDTO("asd", null, 1L);
         var page = new PageImpl<>(List.of(new Postagem()));
 
         when(postagemRepository.buscarComFiltros(any(), any())).thenReturn(page);

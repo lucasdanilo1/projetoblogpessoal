@@ -37,6 +37,12 @@ public class UsuarioServiceImpl implements UsuarioService {
         usuarioRepository.save(usuario);
     }
 
+    public UsuarioDTO buscarPorId(Long id) {
+        var usuario = usuarioRepository.findById(id)
+                .orElseThrow(() -> new EntidadeNaoEncontradaException("Usuário não encontrado"));
+        return new UsuarioDTO(usuario);
+    }
+
     public UsuarioDTO atualizar(Long id, AtualizaUsuarioDTO dto) {
         var usuario = usuarioRepository.findById(id)
                 .orElseThrow(() -> new EntidadeNaoEncontradaException("Usuário não encontrado"));

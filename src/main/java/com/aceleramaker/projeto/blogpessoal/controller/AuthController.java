@@ -2,6 +2,7 @@ package com.aceleramaker.projeto.blogpessoal.controller;
 
 import com.aceleramaker.projeto.blogpessoal.controller.schema.DadosCadastroUsuario;
 import com.aceleramaker.projeto.blogpessoal.controller.schema.LoginRequestDTO;
+import com.aceleramaker.projeto.blogpessoal.controller.schema.LoginResponseDTO;
 import com.aceleramaker.projeto.blogpessoal.infra.security.JwtService;
 import com.aceleramaker.projeto.blogpessoal.model.Usuario;
 import com.aceleramaker.projeto.blogpessoal.model.UsuarioLogin;
@@ -10,8 +11,6 @@ import com.aceleramaker.projeto.blogpessoal.repository.UsuarioLoginRepository;
 import com.aceleramaker.projeto.blogpessoal.repository.UsuarioRepository;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
-import jakarta.servlet.http.Cookie;
-import jakarta.servlet.http.HttpServletResponse;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -38,9 +37,8 @@ public class AuthController {
             @ApiResponse(responseCode = "401", description = "Não autorizado")
     })
     @Transactional
-    public ResponseEntity<String> login(
-            @Valid @RequestBody LoginRequestDTO loginDto,
-            HttpServletResponse response) {
+    public ResponseEntity<LoginResponseDTO> login(
+            @Valid @RequestBody LoginRequestDTO loginDto) {
 
         UsernamePasswordAuthenticationToken authenticationToken =
                 new UsernamePasswordAuthenticationToken(loginDto.usuario(), loginDto.senha());
@@ -51,34 +49,14 @@ public class AuthController {
 
         String jwtToken = jwtService.geradorToken(usuario);
 
+        System.out.println("Token: " + jwtToken);
+
         usuario.setToken(jwtToken);
         usuario.setDataExpiracao(jwtService.gerarDataDeExpiracao());
 
-        usuarioLoginRepository.save(usuario);
+        var usuarioLogin = usuarioLoginRepository.save(usuario);
 
-        Cookie tokenCookie = generateTokenCookie(
-                "accessToken",
-                jwtToken,
-                jwtService.gerarDataDeExpiracao().toEpochMilli(),
-                "/",
-                true,
-                true
-        );
-
-        response.addCookie(tokenCookie);
-
-        return ResponseEntity.ok().body(jwtToken);
-
-    }
-
-    private Cookie generateTokenCookie(String name, String value, long maxAge,
-                                       String path, boolean httpOnly, boolean secure) {
-        Cookie cookie = new Cookie(name, value);
-        cookie.setMaxAge((int) (maxAge / 1000));
-        cookie.setPath(path);
-        cookie.setHttpOnly(httpOnly);
-        cookie.setSecure(secure);
-        return cookie;
+        return ResponseEntity.ok().body(new LoginResponseDTO(usuarioLogin.getUsername(), jwtToken));
     }
 
     @PostMapping("registrar")
