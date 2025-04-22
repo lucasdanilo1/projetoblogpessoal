@@ -6,7 +6,6 @@ import jakarta.validation.constraints.NotNull;
 public record CriarPostagemDTO(
         @NotBlank String titulo,
         @NotBlank String texto,
-        @NotNull Long temaId,
-        @NotNull Long usuarioId
+        @NotNull Long temaId
 ) {
 }

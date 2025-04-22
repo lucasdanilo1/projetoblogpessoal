@@ -3,7 +3,8 @@ package com.aceleramaker.projeto.blogpessoal.controller;
 import com.aceleramaker.projeto.blogpessoal.controller.schema.AtualizaTemaDTO;
 import com.aceleramaker.projeto.blogpessoal.controller.schema.CriarTemaDTO;
 import com.aceleramaker.projeto.blogpessoal.controller.schema.TemaDTO;
-import com.aceleramaker.projeto.blogpessoal.service.TemaService;
+import com.aceleramaker.projeto.blogpessoal.controller.schema.TemaPostagemCountDTO;
+import com.aceleramaker.projeto.blogpessoal.service.TemaServiceImpl;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -18,17 +19,17 @@ import java.util.List;
 @Tag(name = "Temas", description = "Endpoints para gerenciamento de temas")
 public class TemaController {
 
-    private final TemaService temaService;
+    private final TemaServiceImpl temaServiceImpl;
 
-    public TemaController(TemaService temaService) {
-        this.temaService = temaService;
+    public TemaController(TemaServiceImpl temaServiceImpl) {
+        this.temaServiceImpl = temaServiceImpl;
     }
 
     @Operation(summary = "Criar um novo tema")
     @ApiResponse(responseCode = "200", description = "Tema criado com sucesso")
     @PostMapping
     public ResponseEntity<TemaDTO> criar(@RequestBody CriarTemaDTO tema) {
-        return ResponseEntity.ok(temaService.criar(tema));
+        return ResponseEntity.ok(temaServiceImpl.criar(tema));
     }
 
     @Operation(summary = "Atualizar um tema existente")
@@ -38,14 +39,14 @@ public class TemaController {
     })
     @PatchMapping("/{id}")
     public ResponseEntity<TemaDTO> atualizar(@PathVariable Long id, @RequestBody AtualizaTemaDTO tema) {
-        return ResponseEntity.ok(temaService.atualizar(id, tema));
+        return ResponseEntity.ok(temaServiceImpl.atualizar(id, tema));
     }
 
     @Operation(summary = "Listar todos os temas")
     @ApiResponse(responseCode = "200", description = "Lista de temas retornada com sucesso")
     @GetMapping
     public ResponseEntity<List<TemaDTO>> listarTodos() {
-        return ResponseEntity.ok(temaService.listarTodos());
+        return ResponseEntity.ok(temaServiceImpl.listarTodos());
     }
 
     @Operation(summary = "Deletar um tema")
@@ -55,7 +56,14 @@ public class TemaController {
     })
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deletar(@PathVariable Long id) {
-        temaService.deletar(id);
+        temaServiceImpl.deletar(id);
         return ResponseEntity.noContent().build();
+    }
+    
+    @Operation(summary = "Contar postagens por tema")
+    @ApiResponse(responseCode = "200", description = "Contagem de postagens por tema retornada com sucesso")
+    @GetMapping("/contagem-postagens")
+    public ResponseEntity<List<TemaPostagemCountDTO>> contarPostagensPorTema() {
+        return ResponseEntity.ok(temaServiceImpl.contarPostagensPorTema());
     }
 }

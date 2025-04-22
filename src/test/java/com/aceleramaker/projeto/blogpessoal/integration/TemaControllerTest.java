@@ -4,7 +4,7 @@ import com.aceleramaker.projeto.blogpessoal.controller.TemaController;
 import com.aceleramaker.projeto.blogpessoal.controller.schema.TemaDTO;
 import com.aceleramaker.projeto.blogpessoal.infra.security.UserDetailsServiceImpl;
 import com.aceleramaker.projeto.blogpessoal.model.Tema;
-import com.aceleramaker.projeto.blogpessoal.service.TemaService;
+import com.aceleramaker.projeto.blogpessoal.service.TemaServiceImpl;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -29,14 +29,14 @@ class TemaControllerTest {
     private MockMvc mockMvc;
 
     @MockBean
-    private TemaService temaService;
+    private TemaServiceImpl temaServiceImpl;
 
     @MockBean
     private UserDetailsServiceImpl userDetailsService;
 
     @Test
     void deveCriarTemaComSucesso() throws Exception {
-        when(temaService.criar(any())).thenReturn(new TemaDTO(new Tema()));
+        when(temaServiceImpl.criar(any())).thenReturn(new TemaDTO(new Tema()));
 
         mockMvc.perform(post("/api/temas")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -46,7 +46,7 @@ class TemaControllerTest {
 
     @Test
     void deveListarTemasComSucesso() throws Exception {
-        when(temaService.listarTodos()).thenReturn(List.of(new TemaDTO(new Tema())));
+        when(temaServiceImpl.listarTodos()).thenReturn(List.of(new TemaDTO(new Tema())));
 
         mockMvc.perform(get("/api/temas"))
                 .andExpect(status().isOk());

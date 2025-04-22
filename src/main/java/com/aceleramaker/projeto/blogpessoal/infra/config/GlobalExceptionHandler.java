@@ -1,6 +1,7 @@
 package com.aceleramaker.projeto.blogpessoal.infra.config;
 
 import com.aceleramaker.projeto.blogpessoal.model.exception.EntidadeNaoEncontradaException;
+import com.aceleramaker.projeto.blogpessoal.model.exception.OperacaoNaoAutorizadaException;
 import com.aceleramaker.projeto.blogpessoal.model.exception.UsuarioExistenteException;
 import com.aceleramaker.projeto.blogpessoal.model.exception.UsuarioJaCadastradoException;
 import io.jsonwebtoken.ExpiredJwtException;
@@ -100,6 +101,12 @@ public class GlobalExceptionHandler {
     @ResponseStatus(HttpStatus.CONFLICT)
     public ProblemDetail handleUsuarioJaCadastradoException(UsuarioJaCadastradoException ex) {
         return getProblemDetail(HttpServletResponse.SC_CONFLICT, ex.getMessage(), ex);
+    }
+
+    @ExceptionHandler(value = { OperacaoNaoAutorizadaException.class })
+    @ResponseStatus(HttpStatus.FORBIDDEN)
+    public ProblemDetail handleOperacaoNaoAutorizadaException(OperacaoNaoAutorizadaException ex) {
+        return getProblemDetail(HttpServletResponse.SC_FORBIDDEN, ex.getMessage(), ex);
     }
 
     private ProblemDetail getProblemDetail(int statusCode, String defaultDetail, Exception ex) {

@@ -1,7 +1,7 @@
 package com.aceleramaker.projeto.blogpessoal.controller;
 
 import com.aceleramaker.projeto.blogpessoal.controller.schema.*;
-import com.aceleramaker.projeto.blogpessoal.service.UsuarioService;
+import com.aceleramaker.projeto.blogpessoal.service.UsuarioServiceImpl;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -20,17 +20,17 @@ import java.io.IOException;
 @Tag(name = "Usuários", description = "Endpoints para gerenciamento de usuários")
 public class UsuarioController {
 
-    private final UsuarioService usuarioService;
+    private final UsuarioServiceImpl usuarioServiceImpl;
 
-    public UsuarioController(UsuarioService usuarioService) {
-        this.usuarioService = usuarioService;
+    public UsuarioController(UsuarioServiceImpl usuarioServiceImpl) {
+        this.usuarioServiceImpl = usuarioServiceImpl;
     }
 
     @PatchMapping(value = "foto/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<Void> atualizarFoto(
             @PathVariable Long id,
             @RequestPart MultipartFile foto) throws IOException {
-        usuarioService.atualizarFoto(id, foto);
+        usuarioServiceImpl.atualizarFoto(id, foto);
         return ResponseEntity.ok().build();
     }
 
@@ -41,14 +41,24 @@ public class UsuarioController {
     })
     @PatchMapping("/{id}")
     public ResponseEntity<UsuarioDTO> atualizar(@PathVariable Long id, @RequestBody AtualizaUsuarioDTO dto) {
-        return ResponseEntity.ok(usuarioService.atualizar(id, dto));
+        return ResponseEntity.ok(usuarioServiceImpl.atualizar(id, dto));
     }
 
     @Operation(summary = "Listar usuários com filtros")
     @ApiResponse(responseCode = "200", description = "Lista de usuários retornada com sucesso")
     @GetMapping
     public ResponseEntity<Page<UsuarioDTO>> listarTodos(@RequestBody FiltrosUsuarioDTO filtros, Pageable pageable) {
-        return ResponseEntity.ok(usuarioService.listarUsuarios(filtros, pageable));
+        return ResponseEntity.ok(usuarioServiceImpl.listarUsuarios(filtros, pageable));
+    }
+
+    @Operation(summary = "Buscar um usuário pelo ID")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Usuário encontrado com sucesso"),
+            @ApiResponse(responseCode = "404", description = "Usuário não encontrado")
+    })
+    @GetMapping("/{id}")
+    public ResponseEntity<UsuarioDTO> buscarPorId(@PathVariable Long id) {
+        return ResponseEntity.ok(usuarioServiceImpl.buscarPorId(id));
     }
 
     @Operation(summary = "Deletar um usuário")
@@ -58,7 +68,7 @@ public class UsuarioController {
     })
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deletar(@PathVariable Long id) {
-        usuarioService.deletar(id);
+        usuarioServiceImpl.deletar(id);
         return ResponseEntity.noContent().build();
     }
 }

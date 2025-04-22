@@ -10,7 +10,7 @@ import com.aceleramaker.projeto.blogpessoal.model.Tema;
 import com.aceleramaker.projeto.blogpessoal.model.Usuario;
 import com.aceleramaker.projeto.blogpessoal.repository.UsuarioLoginRepository;
 import com.aceleramaker.projeto.blogpessoal.repository.UsuarioRepository;
-import com.aceleramaker.projeto.blogpessoal.service.PostagemService;
+import com.aceleramaker.projeto.blogpessoal.service.PostagemServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,7 +40,7 @@ class PostagemControllerTest {
     private MockMvc mockMvc;
 
     @MockBean
-    private PostagemService postagemService;
+    private PostagemServiceImpl postagemServiceImpl;
 
     @MockBean
     private UserDetailsServiceImpl userDetailsService;
@@ -73,12 +73,12 @@ class PostagemControllerTest {
 
         Page<PostagemDTO> page = new PageImpl<>(List.of(new PostagemDTO(postagem)));
 
-        when(postagemService.listarPostagem(any(), any())).thenReturn(page);
+        when(postagemServiceImpl.listarPostagem(any(), any())).thenReturn(page);
     }
 
     @Test
     void deveCriarPostagemComSucesso() throws Exception {
-        when(postagemService.criar(any())).thenReturn(new PostagemDTO(new Postagem()));
+        when(postagemServiceImpl.criar(any())).thenReturn(new PostagemDTO(new Postagem()));
 
         mockMvc.perform(post("/api/postagens")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -88,7 +88,7 @@ class PostagemControllerTest {
 
     @Test
     void deveListarPostagensComSucesso() throws Exception {
-        when(postagemService.listarPostagem(any(), any()))
+        when(postagemServiceImpl.listarPostagem(any(), any()))
                 .thenReturn(new PageImpl<>(List.of(new PostagemDTO(new Postagem()))));
 
         mockMvc.perform(get("/api/postagens")

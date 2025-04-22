@@ -3,7 +3,7 @@ package com.aceleramaker.projeto.blogpessoal.integration;
 import com.aceleramaker.projeto.blogpessoal.controller.UsuarioController;
 import com.aceleramaker.projeto.blogpessoal.controller.schema.UsuarioDTO;
 import com.aceleramaker.projeto.blogpessoal.model.Usuario;
-import com.aceleramaker.projeto.blogpessoal.service.UsuarioService;
+import com.aceleramaker.projeto.blogpessoal.service.UsuarioServiceImpl;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -30,11 +30,11 @@ class UsuarioControllerTest {
     private MockMvc mockMvc;
 
     @MockBean
-    private UsuarioService usuarioService;
+    private UsuarioServiceImpl usuarioServiceImpl;
 
     @Test
     void deveAtualizarUsuarioComSucesso() throws Exception {
-        when(usuarioService.atualizar(anyLong(), any())).thenReturn(new UsuarioDTO(new Usuario()));
+        when(usuarioServiceImpl.atualizar(anyLong(), any())).thenReturn(new UsuarioDTO(new Usuario()));
 
         mockMvc.perform(patch("/api/usuarios/1")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -44,7 +44,7 @@ class UsuarioControllerTest {
 
     @Test
     void deveListarUsuariosComSucesso() throws Exception {
-        when(usuarioService.listarUsuarios(any(), any()))
+        when(usuarioServiceImpl.listarUsuarios(any(), any()))
                 .thenReturn(new PageImpl<>(List.of(new UsuarioDTO(new Usuario()))));
 
         mockMvc.perform(get("/api/usuarios")
