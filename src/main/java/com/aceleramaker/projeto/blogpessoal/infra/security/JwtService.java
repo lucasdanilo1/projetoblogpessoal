@@ -25,6 +25,8 @@ public class JwtService {
                     .create()
                     .withIssuer("acelera")
                     .withSubject(usuario.getUsuario().getUsuario())
+                    .withClaim("nome", usuario.getUsuario().getNome())
+                    .withClaim("id", usuario.getUsuario().getId())
                     .withExpiresAt(gerarDataDeExpiracao())
                     .sign(algorithm);
         } catch (JWTCreationException exception) {
