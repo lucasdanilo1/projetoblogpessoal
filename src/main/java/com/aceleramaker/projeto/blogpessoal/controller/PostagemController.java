@@ -4,6 +4,7 @@ import com.aceleramaker.projeto.blogpessoal.controller.schema.AtualizaPostagemDT
 import com.aceleramaker.projeto.blogpessoal.controller.schema.CriarPostagemDTO;
 import com.aceleramaker.projeto.blogpessoal.controller.schema.FiltrosPostagemDTO;
 import com.aceleramaker.projeto.blogpessoal.controller.schema.PostagemDTO;
+import com.aceleramaker.projeto.blogpessoal.controller.schema.PostagensPorDiaDTO;
 import com.aceleramaker.projeto.blogpessoal.service.PostagemServiceImpl;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -87,5 +88,12 @@ public class PostagemController {
     @GetMapping("/{id}")
     public ResponseEntity<PostagemDTO> buscarPorId(@PathVariable Long id) {
         return ResponseEntity.ok(postagemServiceImpl.buscarPorId(id));
+    }
+
+    @Operation(summary = "Contar postagens por dia da semana (última semana completa)")
+    @ApiResponse(responseCode = "200", description = "Contagem retornada com sucesso")
+    @GetMapping("/posts-por-dia")
+    public ResponseEntity<List<PostagensPorDiaDTO>> contarPostagensPorDia() {
+        return ResponseEntity.ok(postagemServiceImpl.contarPostagensPorDiaDaSemana());
     }
 }

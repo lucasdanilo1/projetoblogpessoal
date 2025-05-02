@@ -1,9 +1,11 @@
 package com.aceleramaker.projeto.blogpessoal.service;
 
 import com.aceleramaker.projeto.blogpessoal.controller.schema.AtualizaPostagemDTO;
+import com.aceleramaker.projeto.blogpessoal.controller.schema.ContagemDiaSemana;
 import com.aceleramaker.projeto.blogpessoal.controller.schema.CriarPostagemDTO;
 import com.aceleramaker.projeto.blogpessoal.controller.schema.FiltrosPostagemDTO;
 import com.aceleramaker.projeto.blogpessoal.controller.schema.PostagemDTO;
+import com.aceleramaker.projeto.blogpessoal.controller.schema.PostagensPorDiaDTO;
 import com.aceleramaker.projeto.blogpessoal.model.Postagem;
 import com.aceleramaker.projeto.blogpessoal.model.UsuarioLogin;
 import com.aceleramaker.projeto.blogpessoal.model.exception.EntidadeNaoEncontradaException;
@@ -18,6 +20,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
@@ -113,5 +116,29 @@ public class PostagemServiceImpl implements PostagemService {
         }
         
         postagemRepository.deleteById(id);
+    }
+
+    @Override
+    public List<PostagensPorDiaDTO> contarPostagensPorDiaDaSemana() {
+        List<ContagemDiaSemana> resultados = postagemRepository.contarPostagensPorDiaDaSemanaUltimaSemana();
+
+        Map<Integer, String> mapDias = Map.of(
+                1, "Segunda",
+                2, "Terça",
+                3, "Quarta",
+                4, "Quinta",
+                5, "Sexta",
+                6, "Sábado",
+                7, "Domingo"
+        );
+
+        return resultados.stream()
+                .map(resultado -> {
+                    Integer diaNumero = resultado.getDia_semana();
+                    Long quantidade = resultado.getQuantidade();
+                    String diaNome = mapDias.get(diaNumero);
+                    return new PostagensPorDiaDTO(diaNome, quantidade);
+                })
+                .collect(Collectors.toList());
     }
 }

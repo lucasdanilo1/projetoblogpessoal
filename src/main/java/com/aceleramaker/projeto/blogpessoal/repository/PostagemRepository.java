@@ -1,6 +1,7 @@
 package com.aceleramaker.projeto.blogpessoal.repository;
 
 import com.aceleramaker.projeto.blogpessoal.controller.schema.FiltrosPostagemDTO;
+import com.aceleramaker.projeto.blogpessoal.controller.schema.ContagemDiaSemana;
 import com.aceleramaker.projeto.blogpessoal.model.Postagem;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -11,6 +12,7 @@ import org.springframework.data.repository.query.Param;
 import java.util.List;
 
 public interface PostagemRepository extends JpaRepository<Postagem, Long> {
+
     @Query("""
         SELECT p FROM Postagem p
         WHERE (:#{#filtros.termo()} IS NULL OR 
@@ -29,4 +31,20 @@ public interface PostagemRepository extends JpaRepository<Postagem, Long> {
 
     @Query(value = "SELECT * FROM postagem ORDER BY data DESC LIMIT 6 ", nativeQuery = true)
     List<Postagem> listarUltimosPosts();
+
+    @Query(value = """
+        SELECT 
+            CAST(EXTRACT(ISODOW FROM data) AS INTEGER) as dia_semana, 
+            COUNT(*) as quantidade
+        FROM 
+            postagem
+        WHERE 
+            data >= CAST(CURRENT_DATE - INTERVAL '7 days' AS TIMESTAMP) 
+            AND data < CAST(CURRENT_DATE AS TIMESTAMP)
+        GROUP BY 
+            dia_semana
+        ORDER BY
+            dia_semana
+    """, nativeQuery = true)
+    List<ContagemDiaSemana> contarPostagensPorDiaDaSemanaUltimaSemana();
 }

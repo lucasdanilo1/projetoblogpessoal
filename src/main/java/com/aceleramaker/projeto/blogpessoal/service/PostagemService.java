@@ -4,6 +4,7 @@ import com.aceleramaker.projeto.blogpessoal.controller.schema.AtualizaPostagemDT
 import com.aceleramaker.projeto.blogpessoal.controller.schema.CriarPostagemDTO;
 import com.aceleramaker.projeto.blogpessoal.controller.schema.FiltrosPostagemDTO;
 import com.aceleramaker.projeto.blogpessoal.controller.schema.PostagemDTO;
+import com.aceleramaker.projeto.blogpessoal.controller.schema.PostagensPorDiaDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -22,4 +23,6 @@ public interface PostagemService {
     PostagemDTO buscarPorId(Long id);
 
     void deletar(Long id);
+
+    List<PostagensPorDiaDTO> contarPostagensPorDiaDaSemana();
 }
