@@ -58,7 +58,7 @@ class PostagemServiceImplTest {
     @Test
     void deveListarPostagensComFiltros() {
         var pageable = mock(Pageable.class);
-        var filtros = new FiltrosPostagemDTO("asd", null, 1L);
+        var filtros = new FiltrosPostagemDTO("asd", null, null, null, null);
         var page = new PageImpl<>(List.of(new Postagem()));
 
         when(postagemRepository.buscarComFiltros(any(), any())).thenReturn(page);
