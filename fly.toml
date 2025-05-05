@@ -1,9 +1,9 @@
-# fly.toml app configuration file generated for projetoblogpessoal on 2025-05-05T03:05:35Z
+# fly.toml app configuration file generated for projetoblogpessoal-0giawa on 2025-05-05T13:18:00Z
 #
 # See https://fly.io/docs/reference/configuration/ for information about how to use this file.
 #
 
-app = 'projetoblogpessoal'
+app = 'projetoblogpessoal-0giawa'
 primary_region = 'gru'
 
 [build]
