@@ -12,8 +12,8 @@ INSERT INTO tema (descricao) VALUES
 ('Testes de Software');
 
 INSERT INTO postagem (titulo, texto, data, tema_id, usuario_id) VALUES
-('Networking no Acelera Maker', 'Conheci muita gente boa e fiz contatos importantes durante o Acelera Maker.', CURRENT_TIMESTAMP - INTERVAL '25 day', 4, 5),
-('Minha Experiência no Acelera Maker', 'Minha jornada no Acelera Maker foi fundamental para me tornar um desenvolvedor full-stack pronto para os desafios do mercado.', CURRENT_TIMESTAMP - INTERVAL '4 day', 2, 2),
-('Spring Boot e Angular no Acelera Maker', 'Adorei a forma como o Acelera Maker ensina Spring Boot e Angular, tecnologias essenciais hoje em dia.', CURRENT_TIMESTAMP - INTERVAL '6 day', 2, 3),
-('IA no Acelera Maker', 'A introdução à Inteligência Artificial no Acelera Maker abriu minha mente para novas possibilidades na área de tecnologia.', CURRENT_TIMESTAMP - INTERVAL '1 day', 3, 1),
-('Projeto Final do Acelera Maker', 'O projeto final do Acelera Maker foi desafiador, mas muito gratificante! Construir uma aplicação completa com Spring e Angular solidificou meu aprendizado.', CURRENT_TIMESTAMP - INTERVAL '5 day', 1, 4);
+('Networking no Acelera Maker', 'Conheci muita gente boa e fiz contatos importantes durante o Acelera Maker.', DATEADD('DAY', -25, CURRENT_TIMESTAMP), 4, 5),
+('Minha Experiência no Acelera Maker', 'Minha jornada no Acelera Maker foi fundamental para me tornar um desenvolvedor full-stack pronto para os desafios do mercado.', DATEADD('DAY', -4, CURRENT_TIMESTAMP), 2, 2),
+('Spring Boot e Angular no Acelera Maker', 'Adorei a forma como o Acelera Maker ensina Spring Boot e Angular, tecnologias essenciais hoje em dia.', DATEADD('DAY', -6, CURRENT_TIMESTAMP), 2, 3),
+('IA no Acelera Maker', 'A introdução à Inteligência Artificial no Acelera Maker abriu minha mente para novas possibilidades na área de tecnologia.', DATEADD('DAY', -1, CURRENT_TIMESTAMP), 3, 1),
+('Projeto Final do Acelera Maker', 'O projeto final do Acelera Maker foi desafiador, mas muito gratificante! Construir uma aplicação completa com Spring e Angular solidificou meu aprendizado.', DATEADD('DAY', -5, CURRENT_TIMESTAMP), 1, 4);
