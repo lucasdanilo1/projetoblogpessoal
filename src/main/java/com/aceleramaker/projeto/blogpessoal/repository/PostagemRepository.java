@@ -39,7 +39,7 @@ public interface PostagemRepository extends JpaRepository<Postagem, Long> {
         FROM 
             postagem
         WHERE 
-            data >= CAST(CURRENT_DATE - INTERVAL '7 days' AS TIMESTAMP) 
+            data >= DATEADD('DAY', -7, CURRENT_DATE) 
             AND data < CAST(CURRENT_DATE AS TIMESTAMP)
         GROUP BY 
             dia_semana
