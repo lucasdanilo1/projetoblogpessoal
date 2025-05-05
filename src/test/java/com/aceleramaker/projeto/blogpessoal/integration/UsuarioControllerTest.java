@@ -4,6 +4,7 @@ import com.aceleramaker.projeto.blogpessoal.controller.UsuarioController;
 import com.aceleramaker.projeto.blogpessoal.controller.schema.UsuarioDTO;
 import com.aceleramaker.projeto.blogpessoal.model.Usuario;
 import com.aceleramaker.projeto.blogpessoal.service.UsuarioServiceImpl;
+import com.aceleramaker.projeto.blogpessoal.infra.security.JwtService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -31,6 +32,9 @@ class UsuarioControllerTest {
 
     @MockBean
     private UsuarioServiceImpl usuarioServiceImpl;
+
+    @MockBean
+    private JwtService jwtService;
 
     @Test
     void deveAtualizarUsuarioComSucesso() throws Exception {
