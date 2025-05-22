@@ -84,21 +84,18 @@
 		<dependency>
 			<groupId>org.flywaydb</groupId>
 			<artifactId>flyway-core</artifactId>
-			<version>10.6.0</version>
+			<version>10.17.0</version>
 		</dependency>
-		<!-- Remover driver PostgreSQL -->
-		<!--
+		<dependency>
+			<groupId>org.flywaydb</groupId>
+			<artifactId>flyway-database-postgresql</artifactId>
+			<version>10.17.0</version>
+		</dependency>
 		<dependency>
 			<groupId>org.postgresql</groupId>
 			<artifactId>postgresql</artifactId>
+			<version>42.7.4</version>
 			<scope>runtime</scope>
-		</dependency>
-		-->
-		<!-- Adicionar driver H2 -->
-		<dependency>
-			<groupId>com.h2database</groupId>
-			<artifactId>h2</artifactId>
-			<scope>runtime</scope> <!-- Ou <scope>test</scope> se for usar apenas para testes -->
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
